@@ -65,7 +65,7 @@ namespace KingUploader.Controllers
         [HttpPost]
         public bool Merge()
         {
-            string filenameMain = "How to Upload File with a progress Bar in ASP.NET Core.mp4";
+            string filenameMain = "9620436.jpg";
             string folder = $@"wwwroot\files\";
             var uploadRootFolder = Path.Combine(Environment.CurrentDirectory, folder);
             bool Output = false;

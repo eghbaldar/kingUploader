@@ -48,6 +48,7 @@
 
 <input type="file" id="fileupload1">
 <button type="button" onclick="merging()">Merge</button>
+<button type="button" id="btnContinue_or_pause" onclick="pause()">Pause</button>
 
 @section Scripts{
     <script>
@@ -61,6 +62,8 @@
         var file;
         var byteBasedEachChunk;
 
+        var continue_or_pause = true;
+
         var successfulFlag = true;
         fileInput.addEventListener('change', handleFileUpload);
 
@@ -71,75 +74,58 @@
 
             byteBasedEachChunk = eachCHUNK * 1024;
             CalcIncreaseValue(file.size);
-
-            //while (start < file.size && successfulFlag) {
-
             var chunk = file.slice(start, start + chunkSize);
             uploadChunk(chunk, FilePartCount, chunkSize, file.name);
-            //uploadChunk(chunk, FilePartCount, chunkSize, file.name);
-            //start += chunkSize;
-            //FilePartCount += 1;
-            ////////////////////////////////////////////////////
-            //if (chunk.size >= byteBasedEachChunk)
             increase(true);
-            //else
-            //    increase(false);
-            //}
         }
-
-        //function splitter(chunk, FilePartCount, chunkSize, filename) {
-        //    uploadChunk(chunk, FilePartCount, chunkSize, file.name);
-        //}
 
         function uploadChunk(chunk, FilePartCount, chunkSize, filename) {
 
-            var postData = new FormData();
+            if (continue_or_pause) {
+                var postData = new FormData();
+                postData.append("file", chunk);
+                postData.append("FilePartCount", FilePartCount);
+                postData.append("ChunkSize", chunkSize);
+                postData.append("Filename", filename);
 
-            postData.append("file", chunk);
-            postData.append("FilePartCount", FilePartCount);
-            postData.append("ChunkSize", chunkSize);
-            postData.append("Filename", filename);
-
-            //successfulFlag = false;
-
-            $.ajax({
-                contentType: false,
-                processData: false,
-                type: 'POST',
-                data: postData,
-                url: 'Home/Upload',
-                success: function (data) {
-
-                    //alert(data.success);
-
-                    if (data.success) {
-                        //successfulFlag = true;
-
-                        start += chunkSize;
-                        FilePartCount += 1;
-
-                        var chunk2 = file.slice(start, start + chunkSize);
-
-                        //alert(chunk2.size);
-                        if (chunk2.size >= byteBasedEachChunk)
-                            increase(true);
-                        else
-                           {
-                            increase(false);
-                           }
-                        //alert('13');
-                        if (start < file.size) {
-                            uploadChunk(chunk2, FilePartCount, chunkSize, file.name);
+                $.ajax({
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    data: postData,
+                    url: 'Home/Upload',
+                    success: function (data) {
+                        if (data.success) {
+                            start += chunkSize;
+                            FilePartCount += 1;
+                            var chunk2 = file.slice(start, start + chunkSize);
+                            if (chunk2.size >= byteBasedEachChunk)
+                                increase(true);
+                            else {
+                                increase(false);
+                            }
+                            if (start < file.size) {
+                                uploadChunk(chunk2, FilePartCount, chunkSize, file.name);
+                            }
                         }
-                        //start += chunkSize;
-                        //FilePartCount += 1;
+                    },
+                    error: function (request, status, error) {
+                        //alert('request:' + request.responseText + ';err:' + error);
                     }
-                },
-                error: function (request, status, error) {
-                    //alert('request:' + request.responseText + ';err:' + error);
-                    //successfulFlag = false;
-                }
-            });
+                });
+            }
+        }
+
+        // pausing
+        function pause() {
+            continue_or_pause = !continue_or_pause;
+            if (continue_or_pause)
+                $("#btnContinue_or_pause").attr('value', 'Pause');
+            else {
+                $("#btnContinue_or_pause").attr('value', 'Resume');
+                var chunk = file.slice(start, start + chunkSize);
+                uploadChunk(chunk, FilePartCount, chunkSize, file.name);
+            }
         }
 
         // Merging
@@ -168,10 +154,11 @@
         function increase(lastPartState) {
             if (lastPartState) {
                 current_progress += increased_value;//Math.ceil(increased_value);
+                var showedValue = parseFloat(current_progress.toFixed(2))
                 $("#dynamic")
                     .css("width", current_progress + "%")
                     .attr("aria-valuenow", current_progress)
-                    .text(current_progress + "%");
+                    .text(showedValue + "%");
             }
             else {
                 $("#dynamic")
@@ -180,6 +167,7 @@
                     .text(100 + "%");
             }
         }
+
         function CalcIncreaseValue(fileSize) {
             //fileSize is BYTE
             var kb = fileSize / 1024;
