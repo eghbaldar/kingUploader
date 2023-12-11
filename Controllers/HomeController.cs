@@ -65,7 +65,7 @@ namespace KingUploader.Controllers
         [HttpPost]
         public bool Merge()
         {
-            string filenameMain = "9620436.jpg";
+            string filenameMain = "1.rar";
             string folder = $@"wwwroot\files\";
             var uploadRootFolder = Path.Combine(Environment.CurrentDirectory, folder);
             bool Output = false;
