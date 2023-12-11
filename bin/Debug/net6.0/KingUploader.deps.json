@@ -1,0 +1,50 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "KingUploader/1.0.0": {
+        "dependencies": {
+          "bootstrap": "5.3.2",
+          "tusdotnet": "2.7.2"
+        },
+        "runtime": {
+          "KingUploader.dll": {}
+        }
+      },
+      "bootstrap/5.3.2": {},
+      "tusdotnet/2.7.2": {
+        "runtime": {
+          "lib/net6.0/tusdotnet.dll": {
+            "assemblyVersion": "2.7.2.0",
+            "fileVersion": "2.7.2.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "KingUploader/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "bootstrap/5.3.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-m0/GEaLwE35B8P1xScFhwAsQi5o6kWPzOVPdGkoFwv+5YjmbgXFPQai71N5APwRCU52ZO4vHYWJ5DYSqKKgivw==",
+      "path": "bootstrap/5.3.2",
+      "hashPath": "bootstrap.5.3.2.nupkg.sha512"
+    },
+    "tusdotnet/2.7.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-jCM6OfoUtrIGh4fCR74k6WtaMNLI8Zm+QHRdMijHXfsfRIpQYPe/pOmmHBZrCbB9W0UJmFblcSBPiPVmNV61gw==",
+      "path": "tusdotnet/2.7.2",
+      "hashPath": "tusdotnet.2.7.2.nupkg.sha512"
+    }
+  }
+}

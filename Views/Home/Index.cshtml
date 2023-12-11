@@ -1,0 +1,209 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+    .progress {
+        margin: 10px;
+        width: 700px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #dynamic {
+        height: 100px;
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .progress-bar.active, .progress.active .progress-bar {
+        -webkit-animation: progress-bar-stripes 2s linear infinite;
+        -o-animation: progress-bar-stripes 2s linear infinite;
+        animation: progress-bar-stripes 2s linear infinite;
+    }
+
+    .progress-bar-success {
+        background-color: orange !important;
+    }
+
+</style>
+
+<div class="progress">
+    <div id="dynamic" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+        <span id="current-progress"></span>
+    </div>
+</div>
+<button type="button" onclick="increase()">go</button>
+@*each byte*@
+<div class="w3-border">
+    <div class="w3-grey" id="myBar" style="height:24px;width:0%"></div>
+</div>
+<button class="w3-button w3-green" onclick="move2()">Click Me</button>
+
+
+
+<hr />
+
+<input type="file" id="fileupload1">
+<button type="button" onclick="merging()">Merge</button>
+
+@section Scripts{
+    <script>
+        // Spliting
+        const fileInput = document.getElementById('fileupload1');
+        const eachCHUNK = 100;
+
+        var start = 0;
+        var FilePartCount = 1;
+        var chunkSize;
+        var file;
+        var byteBasedEachChunk;
+
+        var successfulFlag = true;
+        fileInput.addEventListener('change', handleFileUpload);
+
+        function handleFileUpload(event) {
+
+            file = event.target.files[0];
+            chunkSize = 1024 * eachCHUNK; // size of each chunk (1MB)
+
+            byteBasedEachChunk = eachCHUNK * 1024;
+            CalcIncreaseValue(file.size);
+
+            //while (start < file.size && successfulFlag) {
+
+            var chunk = file.slice(start, start + chunkSize);
+            uploadChunk(chunk, FilePartCount, chunkSize, file.name);
+            //uploadChunk(chunk, FilePartCount, chunkSize, file.name);
+            //start += chunkSize;
+            //FilePartCount += 1;
+            ////////////////////////////////////////////////////
+            //if (chunk.size >= byteBasedEachChunk)
+            increase(true);
+            //else
+            //    increase(false);
+            //}
+        }
+
+        //function splitter(chunk, FilePartCount, chunkSize, filename) {
+        //    uploadChunk(chunk, FilePartCount, chunkSize, file.name);
+        //}
+
+        function uploadChunk(chunk, FilePartCount, chunkSize, filename) {
+
+            var postData = new FormData();
+
+            postData.append("file", chunk);
+            postData.append("FilePartCount", FilePartCount);
+            postData.append("ChunkSize", chunkSize);
+            postData.append("Filename", filename);
+
+            //successfulFlag = false;
+
+            $.ajax({
+                contentType: false,
+                processData: false,
+                type: 'POST',
+                data: postData,
+                url: 'Home/Upload',
+                success: function (data) {
+
+                    //alert(data.success);
+
+                    if (data.success) {
+                        //successfulFlag = true;
+
+                        start += chunkSize;
+                        FilePartCount += 1;
+
+                        var chunk2 = file.slice(start, start + chunkSize);
+
+                        //alert(chunk2.size);
+                        if (chunk2.size >= byteBasedEachChunk)
+                            increase(true);
+                        else
+                           {
+                            increase(false);
+                           }
+                        //alert('13');
+                        if (start < file.size) {
+                            uploadChunk(chunk2, FilePartCount, chunkSize, file.name);
+                        }
+                        //start += chunkSize;
+                        //FilePartCount += 1;
+                    }
+                },
+                error: function (request, status, error) {
+                    //alert('request:' + request.responseText + ';err:' + error);
+                    //successfulFlag = false;
+                }
+            });
+        }
+
+        // Merging
+        function merging() {
+            $.ajax({
+                contentType: false,
+                processData: false,
+                type: 'POST',
+                url: 'Home/Merge',
+                success: function () {
+                    //alert('1');
+                },
+                error: function (request, status, error) {
+                    //alert('request:' + request.responseText + ';err:' + error);
+                }
+            });
+        }
+
+
+    </script>
+    <script>
+
+        var increased_value;
+        var current_progress = 0;
+
+        function increase(lastPartState) {
+            if (lastPartState) {
+                current_progress += increased_value;//Math.ceil(increased_value);
+                $("#dynamic")
+                    .css("width", current_progress + "%")
+                    .attr("aria-valuenow", current_progress)
+                    .text(current_progress + "%");
+            }
+            else {
+                $("#dynamic")
+                    .css("width", 100 + "%")
+                    .attr("aria-valuenow", 100)
+                    .text(100 + "%");
+            }
+        }
+        function CalcIncreaseValue(fileSize) {
+            //fileSize is BYTE
+            var kb = fileSize / 1024;
+            var eachKb = Math.ceil(kb / eachCHUNK);
+            var eachUnit = 100 / eachKb;
+            increased_value = eachUnit;
+        }
+
+    </script>
+    <script>
+        function move2() {
+            var elem = document.getElementById("myBar");
+            var width = 0;
+            var id = setInterval(frame, 10);
+            function frame() {
+                if (width >= 100) {
+                    clearInterval(id);
+                } else {
+                    width++;
+                    elem.style.width = width + '%';
+                    elem.innerHTML = width * 1 + '%';
+                }
+            }
+        }
+    </script>
+}
+
