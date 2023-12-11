@@ -14,11 +14,15 @@ namespace KingUploader.Core.Application.Services.Files.Commands.PostFile
         {
             try
             {
-                Core.Domain.File.Files file = new Core.Domain.File.Files();
-                file.Filename = req.Filename;
-                file.FilePart = req.FilePart;
-                _context.Files.Add(file);
+
+                Core.Domain.File.Files newFile = new Core.Domain.File.Files();
+
+                newFile.FilePart = req.FilePart;
+                newFile.Filename = req.Filename;
+
+                _context.Files.Add(newFile);
                 _context.SaveChanges();
+
                 return true;
             }
             catch (Exception ex)

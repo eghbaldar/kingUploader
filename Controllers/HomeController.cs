@@ -24,7 +24,7 @@ namespace KingUploader.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Upload(int FilePartCount, long ChunkSize, string Filename)
+        public IActionResult Upload(long ChunkSize, string Filename)
         {
             IFormFile formFile = Request.Form.Files[0];
 
@@ -48,8 +48,14 @@ namespace KingUploader.Controllers
                 TotalFileParts = (int)Math.Ceiling(PreciseFileParts);
             }
             //
+
+            int filepartcountfromdatabase = _filesFacade.GetLastFilePartService.Execute(new Core.Application.Services.Files.Queries.GetLastFilePart.RequestGetLastFilePartDto
+            {
+                Filename = Filename,
+            }) ;
+
             string FilePartName = String.Format("{0}.{2}.part{1}",
-            Filename, FilePartCount.ToString(), TotalFileParts.ToString());
+            Filename, filepartcountfromdatabase, TotalFileParts.ToString());
             //FilePartName = Path.Combine(folder, FilePartName);
 
             string filename = FilePartName;//Guid.NewGuid() + formFile.FileName;
@@ -61,11 +67,11 @@ namespace KingUploader.Controllers
             }
             _filesFacade.PostFileService.Execute(new Core.Application.Services.Files.Commands.PostFile.RequestPostFileServiceDto
             {
-                Filename = filename,
-                FilePart = FilePartCount,
+                Filename = Filename,
+                FilePart= filepartcountfromdatabase,
             });
             /////////////////////////////////////////
-            System.Threading.Thread.Sleep(10000);
+            System.Threading.Thread.Sleep(100);
             ////////////////////////////////////////
 
             return Json(new resultDto
@@ -82,7 +88,7 @@ namespace KingUploader.Controllers
         [HttpPost]
         public bool Merge()
         {
-            string filenameMain = "1.rar";
+            string filenameMain = "Microsoft.Visual.Studio.2022.v17.4.4.x64.rar";
             string folder = $@"wwwroot\files\";
             var uploadRootFolder = Path.Combine(Environment.CurrentDirectory, folder);
             bool Output = false;

@@ -52,7 +52,7 @@
 <button type="button" onclick="merging()">Merge</button>
 
 <button type="button" id="btncontinue_or_pause_client" onclick="pause()">Pause</button>
-<input type="hidden" id="hidden_FilePartCount" />
+@*<input type="hidden" id="hidden_FilePartCount" />*@
 
 @section Scripts{
     <script>
@@ -65,7 +65,7 @@
 
         var start = 0;
 
-        var FilePartCount;
+        //var FilePartCount;
         //var FilePartCountArr = [];
 
 
@@ -82,8 +82,8 @@
 
             continue_or_pause_client = true;
 
-            $("#hidden_FilePartCount").val('1');
-            FilePartCount = parseInt($("#hidden_FilePartCount").val());
+            //$("#hidden_FilePartCount").val('1');
+            //FilePartCount = parseInt($("#hidden_FilePartCount").val());
 
             file = event.target.files[0];
             chunkSize = 1024 * eachCHUNK; // size of each chunk (1MB)
@@ -95,7 +95,7 @@
             allowSubProgressValue = true;
             move2();
 
-            uploadChunk(chunk, FilePartCount, chunkSize, file.name);
+            uploadChunk(chunk, chunkSize, file.name);
             increase(true);
         }
 
@@ -111,12 +111,12 @@
         //    }
         //}
 
-        function uploadChunk(chunk, FilePartCount, chunkSize, filename) {
+        function uploadChunk(chunk, chunkSize, filename) {
 
             if (continue_or_pause_client) {
                 var postData = new FormData();
                 postData.append("file", chunk);
-                postData.append("FilePartCount", FilePartCount);
+                //postData.append("FilePartCount", FilePartCount);
                 postData.append("ChunkSize", chunkSize);
                 postData.append("Filename", filename);
 
@@ -130,10 +130,10 @@
                         if (data.success) {
 
                             start += chunkSize;
-                            FilePartCount += 1;
+                            //FilePartCount += 1;
                             //FilePartCountArr.push(FilePartCount);
 
-                            $("#hidden_FilePartCount").val(FilePartCount);
+                            //$("#hidden_FilePartCount").val(FilePartCount);
                             var chunk2 = file.slice(start, start + chunkSize);
                             if (chunk2.size >= byteBasedEachChunk) {
                                 subProgressValue = 0;
@@ -144,7 +144,7 @@
                             }
 
                             if (start < file.size) {
-                                uploadChunk(chunk2, FilePartCount, chunkSize, file.name);
+                                uploadChunk(chunk2, chunkSize, file.name);
                             }
                         }
                     },
@@ -169,8 +169,8 @@
                 $("#dynamic").addClass("progress-bar-success");
                 var chunk = file.slice(start, start + chunkSize);
 
-                var newCount = parseInt($("#hidden_FilePartCount").val());
-                uploadChunk(chunk, newCount, chunkSize, file.name);
+                //var newCount = parseInt($("#hidden_FilePartCount").val());
+                uploadChunk(chunk, chunkSize, file.name);
             }
         }
 
