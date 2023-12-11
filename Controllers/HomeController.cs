@@ -1,4 +1,5 @@
-﻿using KingUploader.Models;
+﻿using KingUploader.Core.Application.Interfaces.Facades;
+using KingUploader.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 using System.Diagnostics;
@@ -8,13 +9,22 @@ namespace KingUploader.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IFilesFacade _filesFacade;
+        public HomeController(IFilesFacade filesFacade)
+        {
+            _filesFacade= filesFacade;
+        }
+        /// <summary>
+        /// ////////////////////////////////////////////////////////////////////////
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Upload(long FilePartCount, long ChunkSize, string Filename)
+        public IActionResult Upload(int FilePartCount, long ChunkSize, string Filename)
         {
             IFormFile formFile = Request.Form.Files[0];
 
@@ -49,8 +59,15 @@ namespace KingUploader.Controllers
             {
                 formFile.CopyTo(fileStream);
             }
+            _filesFacade.PostFileService.Execute(new Core.Application.Services.Files.Commands.PostFile.RequestPostFileServiceDto
+            {
+                Filename = filename,
+                FilePart = FilePartCount,
+            });
             /////////////////////////////////////////
-            System.Threading.Thread.Sleep(100);
+            System.Threading.Thread.Sleep(10000);
+            ////////////////////////////////////////
+
             return Json(new resultDto
             {
                 success = true,

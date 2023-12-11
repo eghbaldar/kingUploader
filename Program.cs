@@ -3,11 +3,24 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Microsoft.AspNetCore.Http.Features;
 using KingUploader;
+using KingUploader.Core.Application.Interfaces.Context;
+using KingUploader.Core.Persistence;
+using Microsoft.EntityFrameworkCore;
+using KingUploader.Core.Application.Interfaces.Facades;
+using KingUploader.Core.Application.Services.Files.FacadePattern;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IDataBaseContext, DataBaseContext>();
+builder.Services.AddScoped<IFilesFacade, FilesFacade>();
+
+var ConnStr = builder.Configuration.GetConnectionString("ConnStr");
+builder.Services.AddEntityFrameworkSqlServer().AddDbContext<DataBaseContext>(x => x.UseSqlServer(ConnStr));
+
+
 
 builder.Services.Configure<IISServerOptions>(options =>
 {
