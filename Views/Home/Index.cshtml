@@ -48,7 +48,9 @@
 
 <input type="file" id="fileupload1">
 <button type="button" onclick="merging()">Merge</button>
+
 <button type="button" id="btnContinue_or_pause" onclick="pause()">Pause</button>
+<input type="hidden" id="hidden_FilePartCount" />
 
 @section Scripts{
     <script>
@@ -57,18 +59,26 @@
         const eachCHUNK = 100;
 
         var start = 0;
-        var FilePartCount = 1;
+        var FilePartCount;
         var chunkSize;
         var file;
         var byteBasedEachChunk;
 
-        var continue_or_pause = true;
+        var continue_or_pause;
 
         var successfulFlag = true;
         fileInput.addEventListener('change', handleFileUpload);
 
         function handleFileUpload(event) {
 
+            
+            //alert($("#hidden_FilePartCount").val());
+
+            continue_or_pause = true;
+
+            $("#hidden_FilePartCount").val('1');
+            FilePartCount = parseInt($("#hidden_FilePartCount").val());
+            
             file = event.target.files[0];
             chunkSize = 1024 * eachCHUNK; // size of each chunk (1MB)
 
@@ -97,7 +107,10 @@
                     success: function (data) {
                         if (data.success) {
                             start += chunkSize;
+
+                            //FilePartCount = parseInt($("#hidden_FilePartCount").val())+1;
                             FilePartCount += 1;
+                            $("#hidden_FilePartCount").val(FilePartCount);
                             var chunk2 = file.slice(start, start + chunkSize);
                             if (chunk2.size >= byteBasedEachChunk)
                                 increase(true);
@@ -119,12 +132,13 @@
         // pausing
         function pause() {
             continue_or_pause = !continue_or_pause;
-            if (continue_or_pause)
-                $("#btnContinue_or_pause").attr('value', 'Pause');
+            if (!continue_or_pause) {
+                $("#btnContinue_or_pause").html('Resume');
+            }
             else {
-                $("#btnContinue_or_pause").attr('value', 'Resume');
+                $("#btnContinue_or_pause").html('Pause');
                 var chunk = file.slice(start, start + chunkSize);
-                uploadChunk(chunk, FilePartCount, chunkSize, file.name);
+                uploadChunk(chunk, parseInt($("#hidden_FilePartCount").val()), chunkSize, file.name);
             }
         }
 
