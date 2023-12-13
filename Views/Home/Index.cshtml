@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="~/subProgressbar.css">
 <style>
     .progress {
         margin: 10px;
@@ -32,6 +32,14 @@
     .progress-bar-success-gray {
         background-color: gray !important;
     }
+
+    #btncontinue_or_pause_client{
+        visibility:hidden;
+    }
+
+    #btnMerge{
+        visibility: hidden;
+    }
 </style>
 
 <div class="progress">
@@ -39,7 +47,6 @@
         <span id="current-progress"></span>
     </div>
 </div>
-<button type="button" onclick="actionProgressbar()">go</button>
 @*each byte*@
 <div class="w3-border">
     <div class="w3-grey" id="myBar" style="height:24px;width:0%"></div>
@@ -48,7 +55,7 @@
 <hr />
 
 <input type="file" id="fileupload1">
-<button type="button" onclick="merging()">Merge</button>
+<button type="button" id="btnMerge" onclick="merging()">Merge</button>
 <button type="button" id="btncontinue_or_pause_client" onclick="pause()">Pause</button>
 
 
@@ -78,6 +85,8 @@
             actionSubProgressbar(); // SubProgressbar is fired!
             uploadChunk(chunk, chunkSize, file.name); // the main function is fired!
             actionProgressbar(true); // the main Progressbar is started!
+            $("#btncontinue_or_pause_client").css('visibility', 'visible');
+
         }
 
         // main function
@@ -166,6 +175,7 @@
                     .attr("aria-valuenow", 100)
                     .text(100 + "%");
                 allowSubProgressValue = false;
+                $("#btnMerge").css('visibility', 'visible');
                 $("#btncontinue_or_pause_client").css('visibility', 'hidden'); // Hide [pause-continue botton] after being completed the upload process (100%)
             }
         }
