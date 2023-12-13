@@ -68,6 +68,11 @@
         width: 100%;
     }
 
+    .idBoxbarSpan {
+        font-weight: bold;
+        color: orangered;
+    }
+
     .w3BoxSubProgress-grey {
         background-color: orange !important;
         height: 24px;
@@ -88,10 +93,10 @@
 </div>
 
 <hr />
-
 <input type="file" id="fileupload1">
-<button type="button" id="btnMerge" onclick="merging()">Merge</button>
-<button type="button" id="btncontinue_or_pause_client" onclick="pause()">Pause</button>
+<button type="button" id="btnMerge" class="btn btn-success" onclick="merging()">Merge</button>
+<hr />
+<button type="button" class="btn btn-warning" id="btncontinue_or_pause_client" onclick="pause()">Pause</button>
 
 
 @section Scripts{
@@ -112,7 +117,9 @@
         var resume;
         var resume_filename;
         var resume_Start;
+        // end
 
+        // fired when file will be choosen
         function handleFileUpload(event) {
 
             if (!resume) {
@@ -149,6 +156,7 @@
                     $("#btncontinue_or_pause_client").css('visibility', 'visible');
                     $("#BoxSubProgress").css('visibility', 'visible');
                     $("#btncontinue_or_pause_client").html('Pause');
+                    $(".progress").css('background-image', '')
                 }
             }
 
@@ -186,7 +194,7 @@
                             var time = (endTime - startTime) / 1000;
                             var sizeInBits = chunkSize * 8;
                             var speed = ((sizeInBits / time) / (1024 * 1024)).toFixed(2);
-                            $("#idBoxbar").text("Time: " + time + " [MS], Speed: " + speed + " [MPS]");
+                            $("#idBoxbar").html("File: <span class='idBoxbarSpan'>" + filename + "</span> | Time: <span class='idBoxbarSpan'>" + time + "</span> [MS] | <span class='idBoxbarSpan'>Speed: " + speed + "</span> [MPS]");
                             ///////////
                             start += chunkSize;
                             var chunk2 = file.slice(start, start + chunkSize);
@@ -319,7 +327,6 @@
                 url: 'Home/CheckResume',
                 success: function (data) {
                     if (data.resume) {
-
                         //
                         resume = true;
                         resume_filename = data.filename;
@@ -328,6 +335,12 @@
                         $("#dynamic").removeClass("progress-bar-success-gray");
                         $("#dynamic").addClass("progress-bar-success");
                         $("#btncontinue_or_pause_client").html('Resume');
+                        $("#BoxSubProgress").css('visibility', 'visible');
+                        $("#idMainBoxbar").text("click to continue");
+                        $(".progress")
+                            .css('background-image', 'linear-gradient(57deg, #808080 27.59%, #939393 27.59%, #939393 50%, #808080 50%, #808080 77.59%, #939393 77.59%, #939393 100%)')
+                            .css('background-size', '28.62px 44.07px');
+
                     }
                 },
                 error: function (req, res, err) {
