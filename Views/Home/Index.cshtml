@@ -1,10 +1,11 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-<link rel="stylesheet" href="~/subProgressbar.css">
 <style>
+    body{
+        padding:20px;
+    }
     .progress {
-        margin: 10px;
         width: 100%;
         height: 100px;
         display: flex;
@@ -33,12 +34,35 @@
         background-color: gray !important;
     }
 
-    #btncontinue_or_pause_client{
-        visibility:hidden;
+    #btncontinue_or_pause_client {
+        visibility: hidden;
     }
 
-    #btnMerge{
+    #btnMerge {
         visibility: hidden;
+    }
+
+    #myBar{
+        height: 24px;
+        width: 0%
+    }
+
+    .w3BoxSubProgress{
+        visibility:hidden;
+        border: 1px solid #ccc !important
+    }
+
+    #idBoxbar{
+        position: absolute;
+        padding-bottom: 1px !important;
+        color: #000 !important;
+        width:100%;
+    }
+
+    .w3BoxSubProgress-grey {                    
+        background-color: orange !important;
+        height: 24px;
+        width: 0%;
     }
 </style>
 
@@ -48,8 +72,9 @@
     </div>
 </div>
 @*each byte*@
-<div class="w3-border">
-    <div class="w3-grey" id="myBar" style="height:24px;width:0%"></div>
+<div class="w3BoxSubProgress" id="BoxSubProgress">
+    <div id="idBoxbar"></div>
+    <div class="w3BoxSubProgress-grey" id="myBar"></div>
 </div>
 
 <hr />
@@ -86,17 +111,26 @@
             uploadChunk(chunk, chunkSize, file.name); // the main function is fired!
             actionProgressbar(true); // the main Progressbar is started!
             $("#btncontinue_or_pause_client").css('visibility', 'visible');
+            $("#BoxSubProgress").css('visibility', 'visible');
 
         }
 
         // main function
+        var timestamp = new Date().getTime();
+
         function uploadChunk(chunk, chunkSize, filename) {
+
 
             if (continue_or_pause_client) {
                 var postData = new FormData();
                 postData.append("file", chunk);
                 postData.append("ChunkSize", chunkSize);
                 postData.append("Filename", filename);
+
+                // calc time and speed of upload
+                var startTime = (new Date()).getTime();
+                var endTime = startTime;
+                // end
 
                 $.ajax({
                     contentType: false,
@@ -106,6 +140,15 @@
                     url: 'Home/Upload',
                     success: function (data) {
                         if (data.success) {
+
+                            //////////// Time & Speed of Uploading
+                            endTime = (new Date()).getTime();
+                            var time = (endTime - startTime) / 1000;
+                            var sizeInBits = chunkSize * 8;
+                            var speed = ((sizeInBits / time) / (1024 * 1024)).toFixed(2);
+                            $("#idBoxbar").text("Time: " + time + " [MS], Speed: " + speed + " [MPS]");
+                            ///////////
+
                             start += chunkSize;
                             var chunk2 = file.slice(start, start + chunkSize);
                             if (chunk2.size >= chunkSize) {
@@ -123,6 +166,7 @@
                     }
                 });
             }
+
         }
 
         // pausing
@@ -177,6 +221,7 @@
                 allowSubProgressValue = false;
                 $("#btnMerge").css('visibility', 'visible');
                 $("#btncontinue_or_pause_client").css('visibility', 'hidden'); // Hide [pause-continue botton] after being completed the upload process (100%)
+                $("#BoxSubProgress").css('visibility', 'hidden');
             }
         }
 
@@ -191,7 +236,7 @@
         // main Sub Progressbar
         function actionSubProgressbar() {
             var elem = document.getElementById("myBar");
-            var id = setInterval(frame, 5);
+            var id = setInterval(frame, 10);
             function frame() {
                 if (allowSubProgressValue) {
                     if (subProgressValue >= 100) {
@@ -201,7 +246,6 @@
                     } else {
                         subProgressValue++;
                         elem.style.width = subProgressValue + '%';
-                        elem.innerHTML = 'Speed of uploading ...';
                     }
                 } else {
                     elem.style.width = 0 + '%';
