@@ -139,6 +139,7 @@
                     file = event.target.files[0]; // get first file from the [input file]
                     chunkSize = 1024 * eachCHUNK; // size of each chunk (1MB)
                     CalcIncreaseValue(file.size); // [increased value] to progress of progressbar
+                    current_progress = CalcLeftResumeValue(file.size);
                     var chunk = file.slice(parseInt(resume_Start), parseInt(resume_Start) + chunkSize);
                     start = parseInt(resume_Start);
                     allowSubProgressValue = true; // SubProgressbar is ready now!
@@ -147,6 +148,7 @@
                     actionProgressbar(true); // the main Progressbar is started!
                     $("#btncontinue_or_pause_client").css('visibility', 'visible');
                     $("#BoxSubProgress").css('visibility', 'visible');
+                    $("#btncontinue_or_pause_client").html('Pause');
                 }
             }
 
@@ -186,9 +188,7 @@
                             var speed = ((sizeInBits / time) / (1024 * 1024)).toFixed(2);
                             $("#idBoxbar").text("Time: " + time + " [MS], Speed: " + speed + " [MPS]");
                             ///////////
-                            //alert(start);
                             start += chunkSize;
-                            //alert(start);
                             var chunk2 = file.slice(start, start + chunkSize);
                             if (chunk2.size >= chunkSize) {
                                 subProgressValue = 0;
@@ -266,12 +266,20 @@
             }
         }
 
+        // CalcIncreaseValue
         function CalcIncreaseValue(fileSize) {
-            //fileSize is BYTE
-            var kb = fileSize / 1024;
+            var kb = fileSize / 1024; // convert to KB
             var eachKb = Math.ceil(kb / eachCHUNK);
             var eachUnit = 100 / eachKb;
             increased_value = eachUnit;
+        }
+
+        // CalcLeftResumeValue
+        function CalcLeftResumeValue(fileSize) {
+            var kb = fileSize / 1024; // convert to KB
+            var eachKb = Math.ceil(kb / eachCHUNK);
+            var kb_resume = parseInt(resume_Start) / 1024;
+            return (kb_resume / eachKb);
         }
 
         // main Sub Progressbar
@@ -317,10 +325,9 @@
                         resume_filename = data.filename;
                         resume_Start = data.start;
                         ///
-                        $("#dynamic").removeClass("progress-bar-success");
-                        $("#dynamic").addClass("progress-bar-success-gray");
+                        $("#dynamic").removeClass("progress-bar-success-gray");
+                        $("#dynamic").addClass("progress-bar-success");
                         $("#btncontinue_or_pause_client").html('Resume');
-
                     }
                 },
                 error: function (req, res, err) {
@@ -329,20 +336,6 @@
             });
 
         });
-
-                                                //function overStart(){
-                                                //    continue_or_pause_client = true; // set default value
-                                                //    file = event.target.files[0]; // get first file from the [input file]
-                                                //    chunkSize = 1024 * eachCHUNK; // size of each chunk (1MB)
-                                                //    CalcIncreaseValue(file.size); // [increased value] to progress of progressbar
-                                                //    var chunk = file.slice(start, start + chunkSize);
-                                                //    allowSubProgressValue = true; // SubProgressbar is ready now!
-                                                //    actionSubProgressbar(); // SubProgressbar is fired!
-                                                //    uploadChunk(chunk, chunkSize, file.name); // the main function is fired!
-                                                //    actionProgressbar(true); // the main Progressbar is started!
-                                                //    $("#btncontinue_or_pause_client").css('visibility', 'visible');
-                                                //    $("#BoxSubProgress").css('visibility', 'visible');
-                                                //}
 
     </script>
 
