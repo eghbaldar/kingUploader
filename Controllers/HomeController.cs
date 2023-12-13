@@ -72,7 +72,7 @@ namespace KingUploader.Controllers
                 Start= Start,
             });
             /////////////////////////////////////////
-            System.Threading.Thread.Sleep(100);
+            System.Threading.Thread.Sleep(10);
             ////////////////////////////////////////
 
             return Json(new resultDto

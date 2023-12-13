@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\IRANFILMPORT\\Desktop\\KingUploader\\wwwroot\\files\\How to Upload File with a progress Bar in ASP.NET Core.mp4.1.part1",
+      "PackagePath": "staticwebassets\\files\\How to Upload File with a progress Bar in ASP.NET Core.mp4.1.part1"
+    },
+    {
       "Id": "C:\\Users\\IRANFILMPORT\\Desktop\\KingUploader\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
@@ -243,6 +247,10 @@
     {
       "Id": "C:\\Users\\IRANFILMPORT\\Desktop\\KingUploader\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "C:\\Users\\IRANFILMPORT\\Desktop\\KingUploader\\wwwroot\\test.mp4",
+      "PackagePath": "staticwebassets\\test.mp4"
     },
     {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.KingUploader.Microsoft.AspNetCore.StaticWebAssets.props",

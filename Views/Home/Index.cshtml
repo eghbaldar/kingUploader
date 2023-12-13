@@ -12,6 +12,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        opacity:.9;
     }
 
     #dynamic {
@@ -80,12 +81,17 @@
     }
 </style>
 
-<div class="progress">
-    <div id="idMainBoxbar"></div>
-    <div id="dynamic" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-        <span id="current-progress"></span>
-    </div>
-</div>
+
+        <div class="progress">
+            <div id="idMainBoxbar"></div>
+            <div id="dynamic" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                <span id="current-progress"></span>
+            </div>
+        </div>
+
+
+
+
 @*each byte*@
 <div class="w3BoxSubProgress" id="BoxSubProgress">
     <div id="idBoxbar"></div>
@@ -93,9 +99,9 @@
 </div>
 
 <hr />
-<input type="file" id="fileupload1">
+<input type="file" id="fileupload1" name="file[]" class="file_multi_video">
 <button type="button" id="btnMerge" class="btn btn-success" onclick="merging()">Merge</button>
-<hr />
+<br />
 <button type="button" class="btn btn-warning" id="btncontinue_or_pause_client" onclick="pause()">Pause</button>
 
 
@@ -159,7 +165,12 @@
                     $(".progress").css('background-image', '')
                 }
             }
-
+            /////////////////////////////////////////////////////////////
+            var video = document.getElementById("vid");
+            var fileURL = URL.createObjectURL(event.target.files[0])
+            video.src = fileURL;
+            video.play();
+            /////////////////////////////////////////////////////////////
         }
 
         // main function
@@ -195,9 +206,10 @@
                             var sizeInBits = chunkSize * 8;
                             var speed = ((sizeInBits / time) / (1024 * 1024)).toFixed(2);
                             $("#idBoxbar").html("File: <span class='idBoxbarSpan'>" + filename + "</span> | Time: <span class='idBoxbarSpan'>" + time + "</span> [MS] | <span class='idBoxbarSpan'>Speed: " + speed + "</span> [MPS]");
-                            ///////////
+
                             start += chunkSize;
                             var chunk2 = file.slice(start, start + chunkSize);
+
                             if (chunk2.size >= chunkSize) {
                                 subProgressValue = 0;
                                 actionProgressbar(true);
@@ -351,6 +363,5 @@
         });
 
     </script>
-
 }
 
