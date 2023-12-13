@@ -80,6 +80,16 @@ namespace KingUploader.Controllers
             });
         }
 
+        [HttpPost]
+        public IActionResult checkResume(string filename)
+        {
+            return Json(new resultDto
+            {
+                success = true,
+            });
+        }
+
+
         public class resultDto
         {
             public bool success { get; set; }

@@ -266,6 +266,32 @@
             }
         }
 
+        // load page and resume
+        $(document).ready(function () {
+
+            // check if the last film is uploaded or not
+            // the filename must be getting with a parameter such as querystring
+            // but here we assume the left file is "test.jpg"
+
+            //var postData = { filename: 'test.jpg' };
+            //$.ajax({
+            //    contentType: 'application/x-www-form-urlencoded',
+            //    dataType: 'json',
+            //    type: 'POST',
+            //    data: postData,
+            //    url: 'checkResume',
+            //    success: function (data) {
+            //        if(data.success){
+            //            alert(data.message);
+            //        }
+            //    },
+            //    error: function (req, res, err) {
+            //        alert('req' + req.responseText + ' err:' + err);
+            //    }
+            //});
+
+        });
+
     </script>
 
 }
