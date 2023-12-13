@@ -39,84 +39,53 @@
         <span id="current-progress"></span>
     </div>
 </div>
-<button type="button" onclick="increase()">go</button>
+<button type="button" onclick="actionProgressbar()">go</button>
 @*each byte*@
 <div class="w3-border">
     <div class="w3-grey" id="myBar" style="height:24px;width:0%"></div>
 </div>
 
-
 <hr />
 
 <input type="file" id="fileupload1">
 <button type="button" onclick="merging()">Merge</button>
-
 <button type="button" id="btncontinue_or_pause_client" onclick="pause()">Pause</button>
-@*<input type="hidden" id="hidden_FilePartCount" />*@
+
 
 @section Scripts{
     <script>
 
-        var subProgressValue = 0;
-        var allowSubProgressValue;
-        // Spliting
+        const eachCHUNK = 100; // (KB) // the volume of each chunk for uploading // NOTE: the last part may less than 100kb
+        var start = 0; // first Byte of your file // this varibale will be increase by [chunkSize]
+        var chunkSize; // (BYTE) // keep the volume of each chunk in BYTE (eachCHUNK * 1024)
+        var file; // Your file
+        var continue_or_pause_client; // TRUE: Resuming | False : was Paused
+        var subProgressValue = 0; // subProgress Global Variable
+        var allowSubProgressValue; // subProgress Global Variable
+        var increased_value; // main Progress Global Variable
+        var current_progress = 0;// main Progress Global Variable
         const fileInput = document.getElementById('fileupload1');
-        const eachCHUNK = 100;
-
-        var start = 0;
-
-        //var FilePartCount;
-        //var FilePartCountArr = [];
-
-
-        var chunkSize;
-        var file;
-        var byteBasedEachChunk;
-
-        var continue_or_pause_client;
-
-        var successfulFlag = true;
         fileInput.addEventListener('change', handleFileUpload);
 
         function handleFileUpload(event) {
 
-            continue_or_pause_client = true;
-
-            //$("#hidden_FilePartCount").val('1');
-            //FilePartCount = parseInt($("#hidden_FilePartCount").val());
-
-            file = event.target.files[0];
+            continue_or_pause_client = true; // set default value
+            file = event.target.files[0]; // get first file from the [input file]
             chunkSize = 1024 * eachCHUNK; // size of each chunk (1MB)
-
-            byteBasedEachChunk = eachCHUNK * 1024;
-            CalcIncreaseValue(file.size);
+            CalcIncreaseValue(file.size); // [increased value] to progress of progressbar
             var chunk = file.slice(start, start + chunkSize);
-
-            allowSubProgressValue = true;
-            move2();
-
-            uploadChunk(chunk, chunkSize, file.name);
-            increase(true);
+            allowSubProgressValue = true; // SubProgressbar is ready now!
+            actionSubProgressbar(); // SubProgressbar is fired!
+            uploadChunk(chunk, chunkSize, file.name); // the main function is fired!
+            actionProgressbar(true); // the main Progressbar is started!
         }
 
-        //function checkFilePartCountArr(newItem) {
-        //    if ((FilePartCountArr.indexOf(newItem)) > 0) {
-        //        //false => there was already exist.
-        //        //alert("false");
-        //        return false;
-        //    }
-        //    else {
-        //        //alert("true");
-        //        return true;
-        //    }
-        //}
-
+        // main function
         function uploadChunk(chunk, chunkSize, filename) {
 
             if (continue_or_pause_client) {
                 var postData = new FormData();
                 postData.append("file", chunk);
-                //postData.append("FilePartCount", FilePartCount);
                 postData.append("ChunkSize", chunkSize);
                 postData.append("Filename", filename);
 
@@ -128,24 +97,16 @@
                     url: 'Home/Upload',
                     success: function (data) {
                         if (data.success) {
-
                             start += chunkSize;
-                            //FilePartCount += 1;
-                            //FilePartCountArr.push(FilePartCount);
-
-                            //$("#hidden_FilePartCount").val(FilePartCount);
                             var chunk2 = file.slice(start, start + chunkSize);
-                            if (chunk2.size >= byteBasedEachChunk) {
+                            if (chunk2.size >= chunkSize) {
                                 subProgressValue = 0;
-                                increase(true);
+                                actionProgressbar(true);
                             }
-                            else {
-                                increase(false);
-                            }
-
-                            if (start < file.size) {
+                            else
+                                actionProgressbar(false); // if the last part is less than [eachCHUNK]KB
+                            if (start < file.size)
                                 uploadChunk(chunk2, chunkSize, file.name);
-                            }
                         }
                     },
                     error: function (request, status, error) {
@@ -169,7 +130,6 @@
                 $("#dynamic").addClass("progress-bar-success");
                 var chunk = file.slice(start, start + chunkSize);
 
-                //var newCount = parseInt($("#hidden_FilePartCount").val());
                 uploadChunk(chunk, chunkSize, file.name);
             }
         }
@@ -190,14 +150,8 @@
             });
         }
 
-
-    </script>
-    <script>
-
-        var increased_value;
-        var current_progress = 0;
-
-        function increase(lastPartState) {
+        // main progressbar
+        function actionProgressbar(lastPartState) {
             if (lastPartState) {
                 current_progress += increased_value;
                 var showedValue = parseFloat(current_progress.toFixed(2))
@@ -224,9 +178,8 @@
             increased_value = eachUnit;
         }
 
-    </script>
-    <script>
-        function move2() {
+        // main Sub Progressbar
+        function actionSubProgressbar() {
             var elem = document.getElementById("myBar");
             var id = setInterval(frame, 5);
             function frame() {
@@ -234,7 +187,7 @@
                     if (subProgressValue >= 100) {
                         clearInterval(id);
                         subProgressValue = 0;
-                        move2();
+                        actionSubProgressbar();
                     } else {
                         subProgressValue++;
                         elem.style.width = subProgressValue + '%';
@@ -246,6 +199,8 @@
                 }
             }
         }
+
     </script>
+
 }
 

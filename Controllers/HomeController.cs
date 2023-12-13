@@ -88,7 +88,7 @@ namespace KingUploader.Controllers
         [HttpPost]
         public bool Merge()
         {
-            string filenameMain = "Microsoft.Visual.Studio.2022.v17.4.4.x64.rar";
+            string filenameMain = "_DSC0060.jpg";
             string folder = $@"wwwroot\files\";
             var uploadRootFolder = Path.Combine(Environment.CurrentDirectory, folder);
             bool Output = false;
