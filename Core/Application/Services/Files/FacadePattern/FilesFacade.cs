@@ -1,6 +1,7 @@
 ﻿using KingUploader.Core.Application.Interfaces.Context;
 using KingUploader.Core.Application.Interfaces.Facades;
 using KingUploader.Core.Application.Services.Files.Commands.PostFile;
+using KingUploader.Core.Application.Services.Files.Queries.GetCheckResume;
 using KingUploader.Core.Application.Services.Files.Queries.GetLastFilePart;
 
 namespace KingUploader.Core.Application.Services.Files.FacadePattern
@@ -22,6 +23,11 @@ namespace KingUploader.Core.Application.Services.Files.FacadePattern
         public GetLastFilePartService GetLastFilePartService
         {
             get { return _getLastFilePartService = _getLastFilePartService ?? new GetLastFilePartService(_context); }
+        }  
+        private GetCheckResumeService _getCheckResumeService;
+        public GetCheckResumeService GetCheckResumeService
+        {
+            get { return _getCheckResumeService = _getCheckResumeService ?? new GetCheckResumeService(_context); }
         }
         
     }

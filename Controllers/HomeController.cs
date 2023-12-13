@@ -24,7 +24,7 @@ namespace KingUploader.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Upload(long ChunkSize, string Filename)
+        public IActionResult Upload(long ChunkSize, string Filename,string Start)
         {
             IFormFile formFile = Request.Form.Files[0];
 
@@ -54,8 +54,8 @@ namespace KingUploader.Controllers
                 Filename = Filename,
             }) ;
 
-            string FilePartName = String.Format("{0}.{2}.part{1}",
-            Filename, filepartcountfromdatabase, TotalFileParts.ToString());
+            string FilePartName = String.Format("{0}.{1}.part{2}",
+            Filename, TotalFileParts.ToString(), filepartcountfromdatabase);
             //FilePartName = Path.Combine(folder, FilePartName);
 
             string filename = FilePartName;//Guid.NewGuid() + formFile.FileName;
@@ -69,6 +69,7 @@ namespace KingUploader.Controllers
             {
                 Filename = Filename,
                 FilePart= filepartcountfromdatabase,
+                Start= Start,
             });
             /////////////////////////////////////////
             System.Threading.Thread.Sleep(100);
@@ -81,14 +82,10 @@ namespace KingUploader.Controllers
         }
 
         [HttpPost]
-        public IActionResult checkResume(string filename)
+        public IActionResult CheckResume(string filename)
         {
-            return Json(new resultDto
-            {
-                success = true,
-            });
+            return Json(_filesFacade.GetCheckResumeService.Execute());
         }
-
 
         public class resultDto
         {
@@ -98,7 +95,7 @@ namespace KingUploader.Controllers
         [HttpPost]
         public bool Merge()
         {
-            string filenameMain = "_DSC0060.jpg";
+            string filenameMain = "test.jpg";
             string folder = $@"wwwroot\files\";
             var uploadRootFolder = Path.Combine(Environment.CurrentDirectory, folder);
             bool Output = false;

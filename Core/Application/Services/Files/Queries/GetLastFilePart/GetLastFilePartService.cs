@@ -18,7 +18,13 @@ namespace KingUploader.Core.Application.Services.Files.Queries.GetLastFilePart
              .FirstOrDefault();
 
             if (FilePart != 0)
-                return FilePart + 1;
+            {
+                var FilePartResume = _context.Files.Where(x => x.Done == false).FirstOrDefault();
+                if (FilePartResume != null) // upload paused!
+                    return FilePart + 1;
+                else
+                    return FilePart + 1; // upload finished!
+            }
             else
                 return 1; //first record
 

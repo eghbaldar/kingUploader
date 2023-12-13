@@ -55,7 +55,7 @@
 
     #idMainBoxbar {
         position: absolute;
-        font-size: 30px;
+        font-size: 40px;
         color: #fff;
         font-weight: bold;
         text-shadow: 0px 2px 4px rgba(0,0,0,0.38);
@@ -108,20 +108,47 @@
         var current_progress = 0;// main Progress Global Variable
         const fileInput = document.getElementById('fileupload1');
         fileInput.addEventListener('change', handleFileUpload);
+        // resume section (after re-load)
+        var resume;
+        var resume_filename;
+        var resume_Start;
 
         function handleFileUpload(event) {
 
-            continue_or_pause_client = true; // set default value
-            file = event.target.files[0]; // get first file from the [input file]
-            chunkSize = 1024 * eachCHUNK; // size of each chunk (1MB)
-            CalcIncreaseValue(file.size); // [increased value] to progress of progressbar
-            var chunk = file.slice(start, start + chunkSize);
-            allowSubProgressValue = true; // SubProgressbar is ready now!
-            actionSubProgressbar(); // SubProgressbar is fired!
-            uploadChunk(chunk, chunkSize, file.name); // the main function is fired!
-            actionProgressbar(true); // the main Progressbar is started!
-            $("#btncontinue_or_pause_client").css('visibility', 'visible');
-            $("#BoxSubProgress").css('visibility', 'visible');
+            if (!resume) {
+                continue_or_pause_client = true; // set default value
+                file = event.target.files[0]; // get first file from the [input file]
+                chunkSize = 1024 * eachCHUNK; // size of each chunk (1MB)
+                CalcIncreaseValue(file.size); // [increased value] to progress of progressbar
+                var chunk = file.slice(start, start + chunkSize);
+                allowSubProgressValue = true; // SubProgressbar is ready now!
+                actionSubProgressbar(); // SubProgressbar is fired!
+                uploadChunk(chunk, chunkSize, file.name); // the main function is fired!
+                actionProgressbar(true); // the main Progressbar is started!
+                $("#btncontinue_or_pause_client").css('visibility', 'visible');
+                $("#BoxSubProgress").css('visibility', 'visible');
+            } else { // there is a file for resuming ...
+                file = event.target.files[0];
+                if (file.name != resume_filename) {
+                    alert('The selected file is not the exact file.');
+                    return; // exit function!
+                } else {
+                    //alert(resume_Start);
+                    //return;
+                    continue_or_pause_client = true; // set default value
+                    file = event.target.files[0]; // get first file from the [input file]
+                    chunkSize = 1024 * eachCHUNK; // size of each chunk (1MB)
+                    CalcIncreaseValue(file.size); // [increased value] to progress of progressbar
+                    var chunk = file.slice(parseInt(resume_Start), parseInt(resume_Start) + chunkSize);
+                    start = parseInt(resume_Start);
+                    allowSubProgressValue = true; // SubProgressbar is ready now!
+                    actionSubProgressbar(); // SubProgressbar is fired!
+                    uploadChunk(chunk, chunkSize, file.name); // the main function is fired!
+                    actionProgressbar(true); // the main Progressbar is started!
+                    $("#btncontinue_or_pause_client").css('visibility', 'visible');
+                    $("#BoxSubProgress").css('visibility', 'visible');
+                }
+            }
 
         }
 
@@ -136,6 +163,7 @@
                 postData.append("file", chunk);
                 postData.append("ChunkSize", chunkSize);
                 postData.append("Filename", filename);
+                postData.append("Start", start);
 
                 // calc time and speed of upload
                 var startTime = (new Date()).getTime();
@@ -158,8 +186,9 @@
                             var speed = ((sizeInBits / time) / (1024 * 1024)).toFixed(2);
                             $("#idBoxbar").text("Time: " + time + " [MS], Speed: " + speed + " [MPS]");
                             ///////////
-
+                            //alert(start);
                             start += chunkSize;
+                            //alert(start);
                             var chunk2 = file.slice(start, start + chunkSize);
                             if (chunk2.size >= chunkSize) {
                                 subProgressValue = 0;
@@ -273,24 +302,47 @@
             // the filename must be getting with a parameter such as querystring
             // but here we assume the left file is "test.jpg"
 
-            //var postData = { filename: 'test.jpg' };
-            //$.ajax({
-            //    contentType: 'application/x-www-form-urlencoded',
-            //    dataType: 'json',
-            //    type: 'POST',
-            //    data: postData,
-            //    url: 'checkResume',
-            //    success: function (data) {
-            //        if(data.success){
-            //            alert(data.message);
-            //        }
-            //    },
-            //    error: function (req, res, err) {
-            //        alert('req' + req.responseText + ' err:' + err);
-            //    }
-            //});
+            var postData = { filename: 'test.jpg' };
+            $.ajax({
+                contentType: 'application/x-www-form-urlencoded',
+                dataType: 'json',
+                type: 'POST',
+                data: postData,
+                url: 'Home/CheckResume',
+                success: function (data) {
+                    if (data.resume) {
+
+                        //
+                        resume = true;
+                        resume_filename = data.filename;
+                        resume_Start = data.start;
+                        ///
+                        $("#dynamic").removeClass("progress-bar-success");
+                        $("#dynamic").addClass("progress-bar-success-gray");
+                        $("#btncontinue_or_pause_client").html('Resume');
+
+                    }
+                },
+                error: function (req, res, err) {
+                    alert('req' + req.responseText + ' err:' + err);
+                },
+            });
 
         });
+
+                                                //function overStart(){
+                                                //    continue_or_pause_client = true; // set default value
+                                                //    file = event.target.files[0]; // get first file from the [input file]
+                                                //    chunkSize = 1024 * eachCHUNK; // size of each chunk (1MB)
+                                                //    CalcIncreaseValue(file.size); // [increased value] to progress of progressbar
+                                                //    var chunk = file.slice(start, start + chunkSize);
+                                                //    allowSubProgressValue = true; // SubProgressbar is ready now!
+                                                //    actionSubProgressbar(); // SubProgressbar is fired!
+                                                //    uploadChunk(chunk, chunkSize, file.name); // the main function is fired!
+                                                //    actionProgressbar(true); // the main Progressbar is started!
+                                                //    $("#btncontinue_or_pause_client").css('visibility', 'visible');
+                                                //    $("#BoxSubProgress").css('visibility', 'visible');
+                                                //}
 
     </script>
 

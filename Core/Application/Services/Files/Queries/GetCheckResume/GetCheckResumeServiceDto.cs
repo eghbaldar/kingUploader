@@ -1,15 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace KingUploader.Core.Domain.File
+﻿namespace KingUploader.Core.Application.Services.Files.Queries.GetCheckResume
 {
-    public class Files
+    public class GetCheckResumeServiceDto
     {
-        [Key]
-        public long Id{ get; set; }
+        public long Id { get; set; }
         public string Filename { get; set; }
         public int FilePart { get; set; }
         public string Start { get; set; } // the Byte-Index of file // the first value is ZERO
         public DateTime UploadDatetime { get; set; } = DateTime.Now;
-        public bool Done { get; set; } = false; // False=>Paused // True=>Done
+        public bool Resume { get; set; } // False => there is no the left file
     }
 }
