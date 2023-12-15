@@ -79,7 +79,7 @@ namespace KingUploader.Controllers
         [HttpPost]
         public bool Merge()
         {
-            string filenameMain = "test.jpg";
+            string filenameMain = _filesFacade.GetFilenameService.Execute();
             string folder = $@"wwwroot\files\";
             var uploadRootFolder = Path.Combine(Environment.CurrentDirectory, folder);
             bool Output = false;

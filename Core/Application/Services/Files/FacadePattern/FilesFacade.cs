@@ -2,6 +2,7 @@
 using KingUploader.Core.Application.Interfaces.Facades;
 using KingUploader.Core.Application.Services.Files.Commands.PostFile;
 using KingUploader.Core.Application.Services.Files.Queries.GetCheckResume;
+using KingUploader.Core.Application.Services.Files.Queries.GetFilename;
 using KingUploader.Core.Application.Services.Files.Queries.GetLastFilePart;
 
 namespace KingUploader.Core.Application.Services.Files.FacadePattern
@@ -28,6 +29,11 @@ namespace KingUploader.Core.Application.Services.Files.FacadePattern
         public GetCheckResumeService GetCheckResumeService
         {
             get { return _getCheckResumeService = _getCheckResumeService ?? new GetCheckResumeService(_context); }
+        }     
+        private GetFilenameService _getFilenameService;
+        public GetFilenameService GetFilenameService
+        {
+            get { return _getFilenameService = _getFilenameService ?? new GetFilenameService(_context); }
         }
         
     }

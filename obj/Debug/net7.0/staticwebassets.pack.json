@@ -5,6 +5,14 @@
       "PackagePath": "staticwebassets\\KingUploader.bundle.scp.css"
     },
     {
+      "Id": "D:\\_Developing_\\_SOURCE_\\_ASPNET CORE_\\KingUploader\\wwwroot\\KingMaterials\\KingUploader.css",
+      "PackagePath": "staticwebassets\\KingMaterials\\KingUploader.css"
+    },
+    {
+      "Id": "D:\\_Developing_\\_SOURCE_\\_ASPNET CORE_\\KingUploader\\wwwroot\\KingMaterials\\KingUploader.js",
+      "PackagePath": "staticwebassets\\KingMaterials\\KingUploader.js"
+    },
+    {
       "Id": "D:\\_Developing_\\_SOURCE_\\_ASPNET CORE_\\KingUploader\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

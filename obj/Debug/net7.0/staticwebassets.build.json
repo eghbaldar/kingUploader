@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "yla3yUETaRGKOyQuN7XcpRqAczPiiDdcwkQqo+QP0A0=",
+  "Hash": "rXFoFovwMDyK6O2VsY6nvx6ZYgGk9LnhcAnE6tCNyRY=",
   "Source": "KingUploader",
   "BasePath": "_content/KingUploader",
   "Mode": "Default",
@@ -100,6 +100,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\site.js"
+    },
+    {
+      "Identity": "D:\\_Developing_\\_SOURCE_\\_ASPNET CORE_\\KingUploader\\wwwroot\\KingMaterials\\KingUploader.css",
+      "SourceId": "KingUploader",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\_Developing_\\_SOURCE_\\_ASPNET CORE_\\KingUploader\\wwwroot\\",
+      "BasePath": "_content/KingUploader",
+      "RelativePath": "KingMaterials/KingUploader.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\KingMaterials\\KingUploader.css"
+    },
+    {
+      "Identity": "D:\\_Developing_\\_SOURCE_\\_ASPNET CORE_\\KingUploader\\wwwroot\\KingMaterials\\KingUploader.js",
+      "SourceId": "KingUploader",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\_Developing_\\_SOURCE_\\_ASPNET CORE_\\KingUploader\\wwwroot\\",
+      "BasePath": "_content/KingUploader",
+      "RelativePath": "KingMaterials/KingUploader.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\KingMaterials\\KingUploader.js"
     },
     {
       "Identity": "D:\\_Developing_\\_SOURCE_\\_ASPNET CORE_\\KingUploader\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
