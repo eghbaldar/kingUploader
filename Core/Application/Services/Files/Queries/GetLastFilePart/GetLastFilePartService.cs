@@ -17,12 +17,12 @@ namespace KingUploader.Core.Application.Services.Files.Queries.GetLastFilePart
              .Select(x => x.FilePart)
              .FirstOrDefault();
 
-            if (FilePart != 0) // !0 => the file uploading process is not completed!
+            if (FilePart != 0) // FilePart:!0 => the file uploading process is not completed!
             {
                 return FilePart + 1;
             }
             else
-                return 1; // 0 => first record
+                return 1; // FilePart:0 => first record
         }
     }
 }
