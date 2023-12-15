@@ -14,19 +14,31 @@ namespace KingUploader.Core.Application.Services.Files.Commands.PostFile
         {
             try
             {
-                // before inserting a new one, I will delete all recods, because I only need the last one!
-                _context.Files.RemoveRange(_context.Files.Where(x => x.Filename == req.Filename).Select(x => x));
-                //
-                Core.Domain.File.Files newFile = new Core.Domain.File.Files();
+                var file = _context.Files.Where(x => x.Filename == req.Filename).FirstOrDefault();
+                if (file != null) // update
+                {
+                    file.FilePart= req.FilePart;
+                    file.Start= req.Start;
+                    file.UploadDatetime = DateTime.Now;
 
-                newFile.FilePart = req.FilePart;
-                newFile.Filename = req.Filename;
-                newFile.Start = req.Start;
+                    _context.SaveChanges();
 
-                _context.Files.Add(newFile);
-                _context.SaveChanges();
+                    return true;
+                }
+                else
+                {  // insert
+                    Core.Domain.File.Files newFile = new Core.Domain.File.Files();
 
-                return true;
+                    newFile.FilePart = req.FilePart;
+                    newFile.Filename = req.Filename;
+                    newFile.Start = req.Start;
+                    newFile.FilePartCount = req.FilePartCount;
+
+                    _context.Files.Add(newFile);
+                    _context.SaveChanges();
+
+                    return true;
+                }
             }
             catch (Exception ex)
             {

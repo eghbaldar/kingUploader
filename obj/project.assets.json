@@ -2013,11 +2013,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\IRANFILMPORT\\Desktop\\KingUploader\\KingUploader.csproj",
+      "projectUniqueName": "D:\\_Developing_\\_SOURCE_\\_ASPNET CORE_\\KingUploader\\KingUploader.csproj",
       "projectName": "KingUploader",
-      "projectPath": "C:\\Users\\IRANFILMPORT\\Desktop\\KingUploader\\KingUploader.csproj",
+      "projectPath": "D:\\_Developing_\\_SOURCE_\\_ASPNET CORE_\\KingUploader\\KingUploader.csproj",
       "packagesPath": "C:\\Users\\IRANFILMPORT\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\IRANFILMPORT\\Desktop\\KingUploader\\obj\\",
+      "outputPath": "D:\\_Developing_\\_SOURCE_\\_ASPNET CORE_\\KingUploader\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

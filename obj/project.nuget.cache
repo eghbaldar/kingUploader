@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "avpP/OcJsUGDiLKUul5b8RiVKG4pJHhpPmIO2WxbZg67nf+5eSE7mxBs1vbLtAAihZhCGTJjbyBBOiAIfzEaIw==",
+  "dgSpecHash": "2FuFgL9bgSg+Vr5r6zULXBfzg/jgUeOQA5REaI06N6LjG9u4Dd6mtoJ7F2B0FA+OTKLH2NfBFRWeNquhguLuOg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\IRANFILMPORT\\Desktop\\KingUploader\\KingUploader.csproj",
+  "projectFilePath": "D:\\_Developing_\\_SOURCE_\\_ASPNET CORE_\\KingUploader\\KingUploader.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\IRANFILMPORT\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",

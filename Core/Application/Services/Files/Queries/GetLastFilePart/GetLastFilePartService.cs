@@ -27,17 +27,6 @@ namespace KingUploader.Core.Application.Services.Files.Queries.GetLastFilePart
             }
             else
                 return 1; //first record
-
-            //var files = _context.Files
-            //    .Where(x => x.Filename == req.Filename)
-            //    .OrderByDescending(x => x.FilePart)
-            //    .Select(x => x.FilePart)
-            //    .First();
-
-            //if (files != null)
-            //    return files;
-            //else
-            //    return 1; //first record
         }
     }
 }

@@ -12,7 +12,7 @@ namespace KingUploader.Controllers
         private readonly IFilesFacade _filesFacade;
         public HomeController(IFilesFacade filesFacade)
         {
-            _filesFacade= filesFacade;
+            _filesFacade = filesFacade;
         }
         /// <summary>
         /// ////////////////////////////////////////////////////////////////////////
@@ -24,53 +24,38 @@ namespace KingUploader.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Upload(long ChunkSize, string Filename,string Start)
+        public IActionResult Upload(string Filename, string Start, int FilePartCount)
         {
             IFormFile formFile = Request.Form.Files[0];
 
-            ///////////////////////////////////////
+            // create folder
             string folder = $@"wwwroot\files\";
             var uploadRootFolder = Path.Combine(Environment.CurrentDirectory, folder);
-            if (!Directory.Exists(uploadRootFolder))
-            {
-                Directory.CreateDirectory(uploadRootFolder);
-            }
+            if (!Directory.Exists(uploadRootFolder)) Directory.CreateDirectory(uploadRootFolder);
+            // end
 
-            // calculate the number of files that will be created
-            int TotalFileParts = 0;
-            if (formFile.Length < ChunkSize)
-            {
-                TotalFileParts = 1;
-            }
-            else
-            {
-                float PreciseFileParts = ((float)formFile.Length / (float)ChunkSize);
-                TotalFileParts = (int)Math.Ceiling(PreciseFileParts);
-            }
-            //
+            int filepartcountfromdatabase = _filesFacade.GetLastFilePartService
+                .Execute(new Core.Application.Services.Files.Queries.GetLastFilePart.RequestGetLastFilePartDto
+                {
+                    Filename = Filename,
+                    FilePartCount = FilePartCount
+                });
 
-            int filepartcountfromdatabase = _filesFacade.GetLastFilePartService.Execute(new Core.Application.Services.Files.Queries.GetLastFilePart.RequestGetLastFilePartDto
-            {
-                Filename = Filename,
-            }) ;
-
-            string FilePartName = String.Format("{0}.{1}.part{2}",
-            Filename, TotalFileParts.ToString(), filepartcountfromdatabase);
-            //FilePartName = Path.Combine(folder, FilePartName);
-
-            string filename = FilePartName;//Guid.NewGuid() + formFile.FileName;
+            string filename = String.Format("{0}.part{1}", Filename, filepartcountfromdatabase);
             string filePath = Path.Combine(uploadRootFolder, filename);
 
             using var fileStream = new FileStream(filePath, FileMode.CreateNew);
             {
                 formFile.CopyTo(fileStream);
             }
-            _filesFacade.PostFileService.Execute(new Core.Application.Services.Files.Commands.PostFile.RequestPostFileServiceDto
-            {
-                Filename = Filename,
-                FilePart= filepartcountfromdatabase,
-                Start= Start,
-            });
+            _filesFacade.PostFileService
+                .Execute(new Core.Application.Services.Files.Commands.PostFile.RequestPostFileServiceDto
+                {
+                    Filename = Filename,
+                    FilePart = filepartcountfromdatabase,
+                    Start = Start,
+                    FilePartCount = FilePartCount,
+                });
             /////////////////////////////////////////
             System.Threading.Thread.Sleep(10);
             ////////////////////////////////////////
@@ -110,7 +95,7 @@ namespace KingUploader.Controllers
                         key = int.Parse(x.Replace("part", "").Substring(x.Replace("part", "").LastIndexOf("."), x.Replace("part", "").Length - (x.Replace("part", "").LastIndexOf("."))).Replace(".", ""))
                         ,
                         value = x
-                    })                   
+                    })
                     .OrderBy(p => p.key)
                     .ToList();
 
