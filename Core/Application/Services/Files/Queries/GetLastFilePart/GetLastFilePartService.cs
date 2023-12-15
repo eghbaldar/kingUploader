@@ -12,21 +12,17 @@ namespace KingUploader.Core.Application.Services.Files.Queries.GetLastFilePart
         public int Execute(RequestGetLastFilePartDto req)
         {
             var FilePart = _context.Files
-             .Where(x => x.Filename == req.Filename)
+             .Where(x => x.Filename == req.Filename && x.Done == false) // false => the file uploading process is not completed!
              .OrderByDescending(x => x.FilePart)
              .Select(x => x.FilePart)
              .FirstOrDefault();
 
-            if (FilePart != 0)
+            if (FilePart != 0) // !0 => the file uploading process is not completed!
             {
-                var FilePartResume = _context.Files.Where(x => x.Done == false).FirstOrDefault();
-                if (FilePartResume != null) // upload paused!
-                    return FilePart + 1;
-                else
-                    return FilePart + 1; // upload finished!
+                return FilePart + 1;
             }
             else
-                return 1; //first record
+                return 1; // 0 => first record
         }
     }
 }

@@ -38,7 +38,6 @@ namespace KingUploader.Controllers
                 .Execute(new Core.Application.Services.Files.Queries.GetLastFilePart.RequestGetLastFilePartDto
                 {
                     Filename = Filename,
-                    FilePartCount = FilePartCount
                 });
 
             string filename = String.Format("{0}.part{1}", Filename, filepartcountfromdatabase);

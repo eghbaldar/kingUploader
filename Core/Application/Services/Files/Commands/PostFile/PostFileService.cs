@@ -17,9 +17,11 @@ namespace KingUploader.Core.Application.Services.Files.Commands.PostFile
                 var file = _context.Files.Where(x => x.Filename == req.Filename).FirstOrDefault();
                 if (file != null) // update
                 {
-                    file.FilePart= req.FilePart;
+                    file.FilePart = req.FilePart;
                     file.Start= req.Start;
                     file.UploadDatetime = DateTime.Now;
+
+                    if (file.FilePart==req.FilePartCount) file.Done= true;
 
                     _context.SaveChanges();
 
