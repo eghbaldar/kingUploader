@@ -19,12 +19,13 @@ var resume_Start;
 
 // fired when file will be choosen
 function handleFileUpload(event) {
-    
-    if (!checkStandardVolume(fileInput)) {
-        alert('file size is not standard');
+    ///// check the film extension and size
+    var checkSomeErrors = checkStandardVolumeExtentsion(fileInput);
+    if (checkSomeErrors) {
+        alert(checkSomeErrors);
         return;
     }
-
+    // end
     if (!resume) {
         continue_or_pause_client = true; // set default value
         file = event.target.files[0]; // get first file from the [input file]
@@ -251,7 +252,7 @@ $(document).ready(function () {
                 $("#dynamic").addClass("progress-bar-success");
                 $("#btncontinue_or_pause_client").html('Resume');
                 $("#BoxSubProgress").css('visibility', 'visible');
-                $("#idMainBoxbar").text("click to continue");
+                $("#idMainBoxbar").text("choose the exact file");
                 $(".progress")
                     .css('background-image', 'linear-gradient(57deg, #808080 27.59%, #939393 27.59%, #939393 50%, #808080 50%, #808080 77.59%, #939393 77.59%, #939393 100%)')
                     .css('background-size', '28.62px 44.07px');
@@ -266,14 +267,27 @@ $(document).ready(function () {
 });
 
 //calc volume and compare it to the standard value
-function checkStandardVolume(fileInput) {
-    var e = $("#selectLimitedVolume");
-    if (fileInput.files[0].size < e.val()) {
-        fileInput.style.display = "none";
-        return true;
+function checkStandardVolumeExtentsion(fileInput) {
+
+    var eVolume = $("#selectLimitedVolume");
+    var eExtension = $("#selectExtensions");
+
+    var file_extension = /[^.]+$/.exec(fileInput.files[0].name); // get only the file extension
+
+    // check the file size at first
+    if (fileInput.files[0].size < eVolume.val()) {       
+        // check the file extension
+        if (eExtension.val().toLowerCase() == file_extension.toString().toLowerCase()) {
+            fileInput.style.display = "none";
+            return null;// everything is Ok
+        }
+        else {
+            fileInput.value = null;
+            return "Check your file extension!"; // error
+        }
     }
     else {
         fileInput.value = null;
-        return false;
+        return "Check your file size!"; // error
     }
 }

@@ -27,6 +27,7 @@
 </div>
 
 <hr />
+<label>Maximume File Size:</label>
 <select id="selectLimitedVolume">
     <option value="2097152">x&lt;2 MB</option>
     <option value="20971520">x&lt;20 MB</option>
@@ -34,7 +35,16 @@
     <option value="2147483648">x&lt;2 GB</option>
     <option value="4294967296">x&lt;4 GB</option>
 </select>
-<br />
+<br/>
+<label>Desired Extension File:</label>
+<select id="selectExtensions">
+    <option value="jpg">*.jpg</option>
+    <option value="png">*.png</option>
+    <option value="bmp">*.bmp</option>
+    <option value="mp4">*.mp4</option>
+    <option value="mov">*.mov</option>
+</select>
+<hr />
 <input type="file" id="fileupload1">
 <button type="button" id="btnMerge" class="btn btn-success" onclick="merging()">Merge</button>
 <br />
