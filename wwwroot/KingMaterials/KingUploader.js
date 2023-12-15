@@ -19,6 +19,11 @@ var resume_Start;
 
 // fired when file will be choosen
 function handleFileUpload(event) {
+    
+    if (!checkStandardVolume(fileInput)) {
+        alert('file size is not standard');
+        return;
+    }
 
     if (!resume) {
         continue_or_pause_client = true; // set default value
@@ -259,3 +264,16 @@ $(document).ready(function () {
     });
 
 });
+
+//calc volume and compare it to the standard value
+function checkStandardVolume(fileInput) {
+    var e = $("#selectLimitedVolume");
+    if (fileInput.files[0].size < e.val()) {
+        fileInput.style.display = "none";
+        return true;
+    }
+    else {
+        fileInput.value = null;
+        return false;
+    }
+}
