@@ -28,6 +28,30 @@ namespace KingUploader.Controllers
         {
             IFormFile formFile = Request.Form.Files[0];
 
+            // check file size & extension
+            if ((FilePartCount * 100 * 1024) > 50000000)
+            // why 100? because based on our principle, we are going to separate each chunk to 100 kb
+            // why 1024? becaue we need the byte unit to compare the two values
+            {
+                return Json(new resultDto
+                {
+                    success = false,
+                    message = "(server side) => Check your file size! (must less than 50-MB)",
+                });
+            }
+            else
+            {
+                if (Path.GetExtension(Filename).Replace(".", "").ToLower() != "jpg".ToLower())
+                {
+                    return Json(new resultDto
+                    {
+                        success = false,
+                        message = "(server side) => Check your file extension!",
+                    });
+                }
+            }
+            // end
+
             // create folder
             string folder = $@"wwwroot\files\";
             var uploadRootFolder = Path.Combine(Environment.CurrentDirectory, folder);
@@ -61,7 +85,7 @@ namespace KingUploader.Controllers
 
             return Json(new resultDto
             {
-                success = true,
+                success = true
             });
         }
 
@@ -74,6 +98,7 @@ namespace KingUploader.Controllers
         public class resultDto
         {
             public bool success { get; set; }
+            public string message { get; set; }
         }
 
         [HttpPost]

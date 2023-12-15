@@ -124,6 +124,10 @@ function uploadChunk(chunk, chunkSize, filename, filePartCount) {
                     if (start < file.size && continue_or_pause_client)
                         uploadChunk(chunk2, chunkSize, file.name, filePartCount);
                 }
+                else {
+                    alert(data.message);
+                    location.reload();
+                }
             },
             error: function (request, status, error) {
                 //alert('request:' + request.responseText + ';err:' + error);
@@ -283,11 +287,11 @@ function checkStandardVolumeExtentsion(fileInput) {
         }
         else {
             fileInput.value = null;
-            return "Check your file extension!"; // error
+            return "(client side) => Check your file extension!"; // error
         }
     }
     else {
         fileInput.value = null;
-        return "Check your file size!"; // error
+        return "(client side) => Check your file size!"; // error
     }
 }
