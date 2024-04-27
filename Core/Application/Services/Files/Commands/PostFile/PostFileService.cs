@@ -18,10 +18,10 @@ namespace KingUploader.Core.Application.Services.Files.Commands.PostFile
                 if (file != null) // update
                 {
                     file.FilePart = req.FilePart;
-                    file.Start= req.Start;
+                    file.Start = req.Start;
                     file.UploadDatetime = DateTime.Now;
 
-                    if (file.FilePart==req.FilePartCount) file.Done= true;
+                    if (file.FilePart == req.FilePartCount) file.Done = true;
 
                     _context.SaveChanges();
 
@@ -35,6 +35,7 @@ namespace KingUploader.Core.Application.Services.Files.Commands.PostFile
                     newFile.Filename = req.Filename;
                     newFile.Start = req.Start;
                     newFile.FilePartCount = req.FilePartCount;
+                    if (req.FilePartCount == 1) newFile.Done = true; // if the total part fo a file (FilePartCount) is only one part
 
                     _context.Files.Add(newFile);
                     _context.SaveChanges();

@@ -41,7 +41,7 @@ namespace KingUploader.Controllers
             }
             else
             {
-                if (Path.GetExtension(Filename).Replace(".", "").ToLower() != "jpg".ToLower())
+                if (Path.GetExtension(Filename).Replace(".", "").ToLower() != "zip".ToLower())
                 {
                     return Json(new resultDto
                     {
@@ -158,6 +158,12 @@ namespace KingUploader.Controllers
                 return false;
             }
             return Output;
+        }
+
+        [HttpPost]
+        public IActionResult Delete()
+        {            
+            return Json(_filesFacade.DeleteFileAndDatabaseRecordsService.Execute());
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿using KingUploader.Core.Application.Interfaces.Context;
 using KingUploader.Core.Application.Interfaces.Facades;
+using KingUploader.Core.Application.Services.Files.Commands.DeleteFileAndDatabaseRecords;
 using KingUploader.Core.Application.Services.Files.Commands.PostFile;
 using KingUploader.Core.Application.Services.Files.Queries.GetCheckResume;
 using KingUploader.Core.Application.Services.Files.Queries.GetFilename;
@@ -34,6 +35,11 @@ namespace KingUploader.Core.Application.Services.Files.FacadePattern
         public GetFilenameService GetFilenameService
         {
             get { return _getFilenameService = _getFilenameService ?? new GetFilenameService(_context); }
+        }    
+        private DeleteFileAndDatabaseRecordsService _deleteFileAndDatabaseRecordsService;
+        public DeleteFileAndDatabaseRecordsService DeleteFileAndDatabaseRecordsService
+        {
+            get { return _deleteFileAndDatabaseRecordsService = _deleteFileAndDatabaseRecordsService ?? new DeleteFileAndDatabaseRecordsService(_context); }
         }
         
     }

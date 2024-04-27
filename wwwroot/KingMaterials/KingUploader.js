@@ -1,5 +1,5 @@
 
-const eachCHUNK = 1000; // Based on KB // e.g. if you add 1000 in this variable, it is equalavent to (1000*1024)=>Byte // the volume of each chunk for uploading // NOTE: the last part may less than 100kb
+const eachCHUNK = 100; // Based on KB // e.g. if you add 1000 in this variable, it is equalavent to (1000*1024)=>Byte // the volume of each chunk for uploading // NOTE: the last part may less than 100kb
 var start = 0; // first Byte of your file // this varibale will be increase by [chunkSize]
 var chunkSize; // (BYTE) // keep the volume of each chunk in BYTE (eachCHUNK * 1024)
 var file; // Your file
@@ -111,7 +111,7 @@ function uploadChunk(chunk, chunkSize, filename, filePartCount) {
 
                     start += chunkSize; // chunkSize is not interval, is an index!
 
-                    var chunk2 = file.slice(start, start + chunkSize); 
+                    var chunk2 = file.slice(start, start + chunkSize);
 
                     if (chunk2.size >= chunkSize) {
                         subProgressValue = 0;
@@ -122,7 +122,7 @@ function uploadChunk(chunk, chunkSize, filename, filePartCount) {
                         chunkSize = chunk2.size;
                         chunk2 = file.slice(start, start + chunkSize);
                         actionProgressbar(false); // if the last part is less than [eachCHUNK] KB
-                    } 
+                    }
 
                     if (start < file.size && continue_or_pause_client)
                         uploadChunk(chunk2, chunkSize, file.name, filePartCount);
@@ -282,7 +282,7 @@ function checkStandardVolumeExtentsion(fileInput) {
     var file_extension = /[^.]+$/.exec(fileInput.files[0].name); // get only the file extension
 
     // check the file size at first
-    if (fileInput.files[0].size < eVolume.val()) {       
+    if (fileInput.files[0].size < eVolume.val()) {
         // check the file extension
         if (eExtension.val().toLowerCase() == file_extension.toString().toLowerCase()) {
             fileInput.style.display = "none";
@@ -297,4 +297,19 @@ function checkStandardVolumeExtentsion(fileInput) {
         fileInput.value = null;
         return "(client side) => Check your file size!"; // error
     }
+}
+
+// delete database and files
+function DeleteDatabaseAndFiles() {
+    $.ajax({
+        content: 'application/x-www-form-urlencoded',
+        contentType: 'json',
+        type: 'POST',
+        url: 'Home/Delete',
+        success: function (data) {
+        },
+        error: function (request, status, error) {
+            //alert('request:' + request.responseText + ';err:' + error);
+        }
+    });
 }
