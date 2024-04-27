@@ -17,6 +17,7 @@ namespace KingUploader.Core.Application.Services.Files.Queries.GetCheckResume
                 return new GetCheckResumeServiceDto
                 {
                     Id = file.Id,
+                    FilePartCount = file.FilePartCount,
                     Filename = file.Filename,
                     FilePart = file.FilePart,
                     Start = file.Start,

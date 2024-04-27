@@ -81,7 +81,7 @@ namespace KingUploader.Controllers
                     FilePartCount = FilePartCount,
                 });
             /////////////////////////////////////////
-            System.Threading.Thread.Sleep(5);
+            System.Threading.Thread.Sleep(20);
             ////////////////////////////////////////
 
             return Json(new ResultPostFileServiceDto

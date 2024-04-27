@@ -15,6 +15,7 @@ fileInput.addEventListener('change', handleFileUpload);
 var resume;
 var resume_filename;
 var resume_Start;
+var resume_filePart;
 // end
 
 // fired when file will be choosen
@@ -29,11 +30,12 @@ function handleFileUpload(event) {
     if (!resume) {
         continue_or_pause_client = true; // set default value
         file = event.target.files[0]; // get first file from the [input file]
-        chunkSize = 1024 * eachCHUNK; // size of each chunk (1MB)
-        CalcIncreaseValue(file.size); // [increased value] to progress of progressbar
-
+        chunkSize = 1024 * eachCHUNK; // size of each chunk (1MB)        
         filePartCount = Math.ceil(file.size / chunkSize);
+
+        CalcIncreaseValue(file.size); // [increased value] to progress of progressbar
         var chunk = file.slice(start, start + chunkSize);
+
         allowSubProgressValue = true; // SubProgressbar is ready now!
         actionSubProgressbar(); // SubProgressbar is fired!
         uploadChunk(chunk, chunkSize, file.name, filePartCount); // the main function is fired!
@@ -51,9 +53,9 @@ function handleFileUpload(event) {
             continue_or_pause_client = true; // set default value
             file = event.target.files[0]; // get first file from the [input file]
             chunkSize = 1024 * eachCHUNK; // size of each chunk (1MB)
-            CalcIncreaseValue(file.size); // [increased value] to progress of progressbar
-            current_progress = CalcLeftResumeValue(file.size);
             filePartCount = Math.ceil(file.size / chunkSize);
+            CalcIncreaseValue(file.size); // [increased value] to progress of progressbar
+            current_progress = CalcLeftResumeValue(file.size);            
             //=============================================
             // The following is the most important, because when we stop the upload process
             // the last START point will be stored, and after fetching again, we have to increase its value
@@ -113,18 +115,18 @@ function uploadChunk(chunk, chunkSize, filename, filePartCount) {
                     //////////// End
 
                     start += chunkSize; // chunkSize is not interval, is an index!
-
+                    
                     var chunk2 = file.slice(start, start + chunkSize);
 
                     if (chunk2.size >= chunkSize) {
                         subProgressValue = 0;
-                        //actionProgressbar(true);
+                        actionProgressbar(true);
                     }
                     else {
                         //chunkSize = chunkSize - chunk2.size;
                         chunkSize = chunk2.size;
                         chunk2 = file.slice(start, start + chunkSize);
-                        //actionProgressbar(false); // if the last part is less than [eachCHUNK] KB
+                        actionProgressbar(false); // if the last part is less than [eachCHUNK] KB
                     }
 
                     if (start < file.size && continue_or_pause_client)
@@ -178,12 +180,12 @@ function merging() {
 // main progressbar
 function actionProgressbar(lastPartState) {
     if (lastPartState) {
-        alert(current_progress);
-        current_progress += increased_value;
-        var showedValue = parseFloat(current_progress.toFixed(2))
+        //alert(current_progress);
+        if (continue_or_pause_client) current_progress += increased_value;
+        var showedValue = parseFloat(current_progress.toFixed(2));
         $("#dynamic")
-            .css("width", current_progress + "%")
-            .attr("aria-valuenow", current_progress);        
+            .css("width", showedValue + "%")
+            .attr("aria-valuenow", showedValue);        
         $("#idMainBoxbar").text(showedValue + "%");
     }
     else {
@@ -202,17 +204,20 @@ function actionProgressbar(lastPartState) {
 // CalcIncreaseValue
 function CalcIncreaseValue(fileSize) {
     var kb = fileSize / 1024; // convert to KB
-    var eachKb = Math.ceil(kb / eachCHUNK);
-    var eachUnit = 100 / eachKb;
+    var eachKb = Math.ceil(kb / eachCHUNK); // how many places does it have in 100% progressbar?
+    var eachUnit = 100 / eachKb; // how much KB does include in each part (eachKb)?
     increased_value = eachUnit;
 }
 
-// CalcLeftResumeValue
+// CalcLeftResumeValue // [increased_value] is going to be filled by the following function
 function CalcLeftResumeValue(fileSize) {
-    var kb = fileSize / 1024; // convert to KB
-    var eachKb = Math.ceil(kb / eachCHUNK);
-    var kb_resume = parseInt(resume_Start) / 1024;
-    return (kb_resume / eachKb);
+    //var kb = fileSize / 1024; // convert to KB
+    //var eachKb = Math.ceil(kb / eachCHUNK);
+    //// [resume_Start] is fetched by database
+    //var kb_resume = parseInt(resume_Start) / 1024;
+    //return (kb_resume / eachKb);
+    ///////////////////////////////////////////////
+    return ((resume_filePart * 100) / filePartCount);
 }
 
 // main Sub Progressbar
@@ -256,6 +261,7 @@ $(document).ready(function () {
                 resume = true;
                 resume_filename = data.filename;
                 resume_Start = data.start;
+                resume_filePart = data.filePart;
                 ///
                 $("#dynamic").removeClass("progress-bar-success-gray");
                 $("#dynamic").addClass("progress-bar-success");
@@ -265,6 +271,12 @@ $(document).ready(function () {
                 $(".progress")
                     .css('background-image', 'linear-gradient(57deg, #808080 27.59%, #939393 27.59%, #939393 50%, #808080 50%, #808080 77.59%, #939393 77.59%, #939393 100%)')
                     .css('background-size', '28.62px 44.07px');
+                //
+                var resumeVolume = parseFloat(((resume_filePart * 100) / data.filePartCount).toFixed(2));
+                $("#dynamic")
+                    .css("width", resumeVolume + "%")
+                    .attr("aria-valuenow", resumeVolume);
+                $("#idMainBoxbar").text(resumeVolume + "%");
 
             }
         },
