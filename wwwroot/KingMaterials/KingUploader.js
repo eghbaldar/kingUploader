@@ -1,5 +1,5 @@
 
-const eachCHUNK = 100; // (KB) // the volume of each chunk for uploading // NOTE: the last part may less than 100kb
+const eachCHUNK = 1000; // Based on KB // e.g. if you add 1000 in this variable, it is equalavent to (1000*1024)=>Byte // the volume of each chunk for uploading // NOTE: the last part may less than 100kb
 var start = 0; // first Byte of your file // this varibale will be increase by [chunkSize]
 var chunkSize; // (BYTE) // keep the volume of each chunk in BYTE (eachCHUNK * 1024)
 var file; // Your file
@@ -31,6 +31,7 @@ function handleFileUpload(event) {
         file = event.target.files[0]; // get first file from the [input file]
         chunkSize = 1024 * eachCHUNK; // size of each chunk (1MB)
         CalcIncreaseValue(file.size); // [increased value] to progress of progressbar
+
         filePartCount = Math.ceil(file.size / chunkSize);
         var chunk = file.slice(start, start + chunkSize);
         allowSubProgressValue = true; // SubProgressbar is ready now!
@@ -78,7 +79,6 @@ var timestamp = new Date().getTime();
 
 function uploadChunk(chunk, chunkSize, filename, filePartCount) {
 
-
     if (continue_or_pause_client) {
         var postData = new FormData();
         postData.append("file", chunk);
@@ -110,17 +110,20 @@ function uploadChunk(chunk, chunkSize, filename, filePartCount) {
                     //////////// End
 
                     start += chunkSize; // chunkSize is not interval, is an index!
-                    var chunk2 = file.slice(start, start + chunkSize);
+
+                    var chunk2 = file.slice(start, start + chunkSize); 
 
                     if (chunk2.size >= chunkSize) {
                         subProgressValue = 0;
                         actionProgressbar(true);
                     }
                     else {
-                        chunkSize = chunkSize - chunk2.size;
+                        //chunkSize = chunkSize - chunk2.size;
+                        chunkSize = chunk2.size;
                         chunk2 = file.slice(start, start + chunkSize);
                         actionProgressbar(false); // if the last part is less than [eachCHUNK] KB
-                    }
+                    } 
+
                     if (start < file.size && continue_or_pause_client)
                         uploadChunk(chunk2, chunkSize, file.name, filePartCount);
                 }

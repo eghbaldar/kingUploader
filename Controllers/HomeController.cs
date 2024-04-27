@@ -29,7 +29,7 @@ namespace KingUploader.Controllers
             IFormFile formFile = Request.Form.Files[0];
 
             // check file size & extension
-            if ((FilePartCount * 100 * 1024) > 50000000)
+            if ((FilePartCount * 100 * 1024) > 5000000000)
             // why 100? because based on our principle, we are going to separate each chunk to 100 kb
             // why 1024? becaue we need the byte unit to compare the two values
             {
@@ -80,7 +80,7 @@ namespace KingUploader.Controllers
                     FilePartCount = FilePartCount,
                 });
             /////////////////////////////////////////
-            System.Threading.Thread.Sleep(10);
+            System.Threading.Thread.Sleep(5);
             ////////////////////////////////////////
 
             return Json(new resultDto

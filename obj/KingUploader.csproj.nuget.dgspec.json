@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\_Developing_\\_SOURCE_\\_ASPNET CORE_\\KingUploader\\KingUploader.csproj": {}
+    "D:\\_PROJECT_\\kingUploader\\kingUploader\\KingUploader.csproj": {}
   },
   "projects": {
-    "D:\\_Developing_\\_SOURCE_\\_ASPNET CORE_\\KingUploader\\KingUploader.csproj": {
+    "D:\\_PROJECT_\\kingUploader\\kingUploader\\KingUploader.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\_Developing_\\_SOURCE_\\_ASPNET CORE_\\KingUploader\\KingUploader.csproj",
+        "projectUniqueName": "D:\\_PROJECT_\\kingUploader\\kingUploader\\KingUploader.csproj",
         "projectName": "KingUploader",
-        "projectPath": "D:\\_Developing_\\_SOURCE_\\_ASPNET CORE_\\KingUploader\\KingUploader.csproj",
-        "packagesPath": "C:\\Users\\IRANFILMPORT\\.nuget\\packages\\",
-        "outputPath": "D:\\_Developing_\\_SOURCE_\\_ASPNET CORE_\\KingUploader\\obj\\",
+        "projectPath": "D:\\_PROJECT_\\kingUploader\\kingUploader\\KingUploader.csproj",
+        "packagesPath": "C:\\Users\\King\\.nuget\\packages\\",
+        "outputPath": "D:\\_PROJECT_\\kingUploader\\kingUploader\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\IRANFILMPORT\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\King\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

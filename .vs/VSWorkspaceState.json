@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Core\\Application",
+    "\\Core\\Application\\Services",
+    "\\Core\\Application\\Services\\Files",
+    "\\Core\\Application\\Services\\Files\\Queries",
+    "\\Core\\Application\\Services\\Files\\Queries\\GetLastFilePart"
+  ],
+  "SelectedNode": "\\Views",
+  "PreviewInSolutionExplorer": false
+}
