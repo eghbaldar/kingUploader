@@ -1,4 +1,5 @@
 ﻿using KingUploader.Core.Application.Interfaces.Facades;
+using KingUploader.Core.Application.Services.Files.Commands.PostFile;
 using KingUploader.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
@@ -33,20 +34,20 @@ namespace KingUploader.Controllers
             // why 100? because based on our principle, we are going to separate each chunk to 100 kb
             // why 1024? becaue we need the byte unit to compare the two values
             {
-                return Json(new resultDto
+                return Json(new ResultPostFileServiceDto
                 {
-                    success = false,
-                    message = "(server side) => Check your file size! (must less than 50-MB)",
+                    Result = 0,
+                    Message = "(server side) => Check your file size! (must less than 50-MB)",
                 });
             }
             else
             {
                 if (Path.GetExtension(Filename).Replace(".", "").ToLower() != "zip".ToLower())
                 {
-                    return Json(new resultDto
+                    return Json(new ResultPostFileServiceDto
                     {
-                        success = false,
-                        message = "(server side) => Check your file extension!",
+                        Result = 0,
+                        Message = "(server side) => Check your file extension!",
                     });
                 }
             }
@@ -71,7 +72,7 @@ namespace KingUploader.Controllers
             {
                 formFile.CopyTo(fileStream);
             }
-            _filesFacade.PostFileService
+            var result = _filesFacade.PostFileService
                 .Execute(new Core.Application.Services.Files.Commands.PostFile.RequestPostFileServiceDto
                 {
                     Filename = Filename,
@@ -83,9 +84,9 @@ namespace KingUploader.Controllers
             System.Threading.Thread.Sleep(5);
             ////////////////////////////////////////
 
-            return Json(new resultDto
+            return Json(new ResultPostFileServiceDto
             {
-                success = true
+                Result = result.Result,
             });
         }
 

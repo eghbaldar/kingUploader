@@ -10,22 +10,43 @@ namespace KingUploader.Core.Application.Services.Files.Commands.PostFile
             _context = context;
 
         }
-        public bool Execute(RequestPostFileServiceDto req)
+        public ResultPostFileServiceDto Execute(RequestPostFileServiceDto req)
         {
             try
             {
                 var file = _context.Files.Where(x => x.Filename == req.Filename).FirstOrDefault();
                 if (file != null) // update
                 {
+
                     file.FilePart = req.FilePart;
                     file.Start = req.Start;
                     file.UploadDatetime = DateTime.Now;
-
                     if (file.FilePart == req.FilePartCount) file.Done = true;
 
-                    _context.SaveChanges();
-
-                    return true;
+                    if (_context.SaveChanges() > 0)
+                    {
+                        if (file.FilePart == req.FilePartCount)
+                        {
+                            return new ResultPostFileServiceDto
+                            {
+                                Result = 2 // {2}=Upload Finished Successfully
+                            };
+                        }
+                        else
+                        {
+                            return new ResultPostFileServiceDto
+                            {
+                                Result = 1 // {1}=Upload is going on.
+                            };
+                        }
+                    }
+                    else
+                    {
+                        return new ResultPostFileServiceDto
+                        {
+                            Result = 0 // {0}=Upload failed!
+                        };
+                    }
                 }
                 else
                 {  // insert
@@ -38,14 +59,38 @@ namespace KingUploader.Core.Application.Services.Files.Commands.PostFile
                     if (req.FilePartCount == 1) newFile.Done = true; // if the total part fo a file (FilePartCount) is only one part
 
                     _context.Files.Add(newFile);
-                    _context.SaveChanges();
-
-                    return true;
+                    if (_context.SaveChanges() > 0)
+                    {
+                        if (req.FilePartCount == 1)
+                        {
+                            return new ResultPostFileServiceDto
+                            {
+                                Result = 2 // {2}=Upload Finished Successfully
+                            };
+                        }
+                        else
+                        {
+                            return new ResultPostFileServiceDto
+                            {
+                                Result = 1 // {1}=Upload is going on.
+                            };
+                        }
+                    }
+                    else
+                    {
+                        return new ResultPostFileServiceDto
+                        {
+                            Result = 0 // {0}=Upload failed!
+                        };
+                    }
                 }
             }
             catch (Exception ex)
             {
-                return false;
+                return new ResultPostFileServiceDto
+                {
+                    Result = 0 // {0}=Upload failed!
+                };
             }
         }
     }

@@ -1,5 +1,5 @@
 
-const eachCHUNK = 100; // Based on KB // e.g. if you add 1000 in this variable, it is equalavent to (1000*1024)=>Byte // the volume of each chunk for uploading // NOTE: the last part may less than 100kb
+const eachCHUNK = 1000; // Based on KB // e.g. if you add 1000 in this variable, it is equalavent to (1000*1024)=>Byte // the volume of each chunk for uploading // NOTE: the last part may less than 100kb
 var start = 0; // first Byte of your file // this varibale will be increase by [chunkSize]
 var chunkSize; // (BYTE) // keep the volume of each chunk in BYTE (eachCHUNK * 1024)
 var file; // Your file
@@ -98,9 +98,12 @@ function uploadChunk(chunk, chunkSize, filename, filePartCount) {
             type: 'POST',
             data: postData,
             url: 'Home/Upload',
-            success: function (data) {
-                if (data.success) {
-
+            success: function (data) {                
+                if (data.result == 0) {
+                    alert(data.message);
+                    location.reload();
+                }
+                if (data.result==1) {
                     //////////// Time & Speed of Uploading
                     endTime = (new Date()).getTime();
                     var time = (endTime - startTime) / 1000;
@@ -115,21 +118,20 @@ function uploadChunk(chunk, chunkSize, filename, filePartCount) {
 
                     if (chunk2.size >= chunkSize) {
                         subProgressValue = 0;
-                        actionProgressbar(true);
+                        //actionProgressbar(true);
                     }
                     else {
                         //chunkSize = chunkSize - chunk2.size;
                         chunkSize = chunk2.size;
                         chunk2 = file.slice(start, start + chunkSize);
-                        actionProgressbar(false); // if the last part is less than [eachCHUNK] KB
+                        //actionProgressbar(false); // if the last part is less than [eachCHUNK] KB
                     }
 
                     if (start < file.size && continue_or_pause_client)
                         uploadChunk(chunk2, chunkSize, file.name, filePartCount);
                 }
-                else {
-                    alert(data.message);
-                    location.reload();
+                if (data.result == 2) {
+                    actionProgressbar(false);
                 }
             },
             error: function (request, status, error) {
@@ -176,12 +178,12 @@ function merging() {
 // main progressbar
 function actionProgressbar(lastPartState) {
     if (lastPartState) {
+        alert(current_progress);
         current_progress += increased_value;
         var showedValue = parseFloat(current_progress.toFixed(2))
         $("#dynamic")
             .css("width", current_progress + "%")
-            .attr("aria-valuenow", current_progress);
-        //.text(showedValue + "%");
+            .attr("aria-valuenow", current_progress);        
         $("#idMainBoxbar").text(showedValue + "%");
     }
     else {
