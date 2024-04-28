@@ -68,10 +68,20 @@ namespace KingUploader.Controllers
             string filename = String.Format("{0}.part{1}", Filename, filepartcountfromdatabase);
             string filePath = Path.Combine(uploadRootFolder, filename);
 
-            using var fileStream = new FileStream(filePath, FileMode.CreateNew);
+            // if file exists, first of all delete and then upload it again
+            if (System.IO.File.Exists(filePath))
             {
-                formFile.CopyTo(fileStream);
+                System.IO.File.Delete(filePath);
             }
+            else
+            {
+                using var fileStream = new FileStream(filePath, FileMode.CreateNew);
+                {
+                    formFile.CopyTo(fileStream);
+                }
+            }
+
+
             var result = _filesFacade.PostFileService
                 .Execute(new Core.Application.Services.Files.Commands.PostFile.RequestPostFileServiceDto
                 {
@@ -81,7 +91,7 @@ namespace KingUploader.Controllers
                     FilePartCount = FilePartCount,
                 });
             /////////////////////////////////////////
-            System.Threading.Thread.Sleep(20);
+            System.Threading.Thread.Sleep(100);
             ////////////////////////////////////////
 
             return Json(new ResultPostFileServiceDto
