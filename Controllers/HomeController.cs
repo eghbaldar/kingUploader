@@ -42,7 +42,7 @@ namespace KingUploader.Controllers
             }
             else
             {
-                if (Path.GetExtension(Filename).Replace(".", "").ToLower() != "zip".ToLower())
+                if (Path.GetExtension(Filename).Replace(".", "").ToLower() != "jpg".ToLower())
                 {
                     return Json(new ResultPostFileServiceDto
                     {

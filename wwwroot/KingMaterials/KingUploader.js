@@ -9,9 +9,28 @@ var subProgressValue = 0; // subProgress Global Variable
 var allowSubProgressValue; // subProgress Global Variable
 var increased_value; // main Progress Global Variable
 var current_progress = 0;// main Progress Global Variable
-const fileInput = document.getElementById('fileupload1');
 var filePartCount; // All parts of files after separating
+///////////////////////////////////////////////////
+const fileInput = document.getElementById('fileupload1');
+const fileInputWithLabel = document.getElementById('idMainBoxbar');
 fileInput.addEventListener('change', handleFileUpload);
+fileInputWithLabel.addEventListener('click', () => {
+    switch ($(fileInputWithLabel).text().toLowerCase()) {
+        case "choose the mission file":
+            fileInput.click(); // Click the hidden file input element
+            break;
+        case "choose the same file ...":
+            fileInput.click(); // Click the hidden file input element
+            break;
+        case "paused":
+            pause();
+            break;
+        default:
+            pause();
+            break;
+    }    
+});
+
 // resume section (after re-load)
 var resume;
 var resume_filename;
@@ -150,7 +169,7 @@ function uploadChunk(chunk, chunkSize, filename, filePartCount) {
 var fireAgainPause = true;
 // pausing
 function pause() {
-    if (fireAgainPause) {
+    if (fireAgainPause) { // "This variable prevents problems when a user clicks non-stop on PAUSE & RESUME."
         continue_or_pause_client = !continue_or_pause_client;
         if (!continue_or_pause_client) {
             //$("#dynamic").removeClass("progress-bar-success");
@@ -318,7 +337,9 @@ $(document).ready(function () {
                 //$("#dynamic").css("width", resumeVolume + "%").attr("aria-valuenow", resumeVolume);
                 //$("#idMainBoxbar").text(resumeVolume + "%");
                 $("#idMainBoxbar").text("Choose the same file ...");
-
+            }
+            else {
+                $("#idMainBoxbar").text("Choose the Mission File");
             }
         },
         error: function (req, res, err) {
