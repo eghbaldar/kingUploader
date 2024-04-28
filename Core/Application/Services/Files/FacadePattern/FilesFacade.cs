@@ -4,7 +4,6 @@ using KingUploader.Core.Application.Services.Files.Commands.DeleteFileAndDatabas
 using KingUploader.Core.Application.Services.Files.Commands.PostFile;
 using KingUploader.Core.Application.Services.Files.Queries.GetCheckResume;
 using KingUploader.Core.Application.Services.Files.Queries.GetFilename;
-using KingUploader.Core.Application.Services.Files.Queries.GetLastFilePart;
 
 namespace KingUploader.Core.Application.Services.Files.FacadePattern
 {
@@ -21,11 +20,6 @@ namespace KingUploader.Core.Application.Services.Files.FacadePattern
         {
             get { return _postFileService = _postFileService ?? new PostFileService(_context); }
         }
-        private GetLastFilePartService _getLastFilePartService;
-        public GetLastFilePartService GetLastFilePartService
-        {
-            get { return _getLastFilePartService = _getLastFilePartService ?? new GetLastFilePartService(_context); }
-        }  
         private GetCheckResumeService _getCheckResumeService;
         public GetCheckResumeService GetCheckResumeService
         {

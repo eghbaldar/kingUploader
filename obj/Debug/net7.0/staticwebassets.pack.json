@@ -21,18 +21,6 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\keravat2_edited.jpg",
-      "PackagePath": "staticwebassets\\files\\keravat2_edited.jpg"
-    },
-    {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\keravat2_edited.jpg.part1",
-      "PackagePath": "staticwebassets\\files\\keravat2_edited.jpg.part1"
-    },
-    {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\keravat2_edited.jpg.part2",
-      "PackagePath": "staticwebassets\\files\\keravat2_edited.jpg.part2"
-    },
-    {
       "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

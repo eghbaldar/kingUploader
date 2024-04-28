@@ -6,34 +6,18 @@
     align-items: center;
     opacity: .9;
     background-color: gray;
-    /*    background-image: linear-gradient(57deg, #808080 27.59%, #939393 27.59%, #939393 50%, #808080 50%, #808080 77.59%, #939393 77.59%, #939393 100%);
-    background-size: 28.62px 44.07px;
-    -webkit-animation: progress-bar-stripes 2s linear infinite;
-    -o-animation: progress-bar-stripes 2s linear infinite;
-    animation: progress-bar-stripes 2s linear infinite;*/
 }
-
-
 #dynamic {
     width: 100%;
     height: 100px;
     font-size: 30px;
     font-weight: bold;
 }
-.progress-bar-big {    
-  /*  background-image: linear-gradient(57deg, #808080 27.59%, #939393 27.59%, #939393 50%, #808080 50%, #808080 77.59%, #939393 77.59%, #939393 100%);
-    background-size: 28.62px 44.07px;*/
-    /*    -webkit-animation: progress-bar-stripes 10s linear infinite;  
-    -o-animation: progress-bar-stripes 10s linear infinite;
-    animation: progress-bar-stripes 10s linear infinite;*/
-}
-
 .progress-bar.active, .progress.active .progress-bar {
     -webkit-animation: progress-bar-stripes 2s linear infinite;
     -o-animation: progress-bar-stripes 2s linear infinite;
     animation: progress-bar-stripes 2s linear infinite;
 }
-
 .progress-bar-success {
     background-color: orange !important;
 }
@@ -57,7 +41,6 @@
 
 .w3BoxSubProgress {
     visibility: hidden;
-    /*border: 1px solid #ccc !important*/ /*(if you want)*/
 }
 
 #idMainBoxbar {

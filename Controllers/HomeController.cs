@@ -15,10 +15,7 @@ namespace KingUploader.Controllers
         {
             _filesFacade = filesFacade;
         }
-        /// <summary>
-        /// ////////////////////////////////////////////////////////////////////////
-        /// </summary>
-        /// <returns></returns>
+
         [HttpGet]
         public IActionResult Index()
         {
@@ -29,66 +26,14 @@ namespace KingUploader.Controllers
         {
             IFormFile formFile = Request.Form.Files[0];
 
-            // check file size & extension
-            if ((FilePartCount * 100 * 1024) > 5000000000)
-            // why 100? because based on our principle, we are going to separate each chunk to 100 kb
-            // why 1024? becaue we need the byte unit to compare the two values
-            {
-                return Json(new ResultPostFileServiceDto
-                {
-                    Result = 0,
-                    Message = "(server side) => Check your file size! (must less than 50-MB)",
-                });
-            }
-            else
-            {
-                if (Path.GetExtension(Filename).Replace(".", "").ToLower() != "jpg".ToLower())
-                {
-                    return Json(new ResultPostFileServiceDto
-                    {
-                        Result = 0,
-                        Message = "(server side) => Check your file extension!",
-                    });
-                }
-            }
-            // end
-
-            // create folder
-            string folder = $@"wwwroot\files\";
-            var uploadRootFolder = Path.Combine(Environment.CurrentDirectory, folder);
-            if (!Directory.Exists(uploadRootFolder)) Directory.CreateDirectory(uploadRootFolder);
-            // end
-
-            int filepartcountfromdatabase = _filesFacade.GetLastFilePartService
-                .Execute(new Core.Application.Services.Files.Queries.GetLastFilePart.RequestGetLastFilePartDto
-                {
-                    Filename = Filename,
-                });
-
-            string filename = String.Format("{0}.part{1}", Filename, filepartcountfromdatabase);
-            string filePath = Path.Combine(uploadRootFolder, filename);
-
-            // if file exists, first of all delete and then upload it again
-            if (System.IO.File.Exists(filePath))
-            {
-                System.IO.File.Delete(filePath);
-            }
-            else
-            {
-                using var fileStream = new FileStream(filePath, FileMode.CreateNew);
-                {
-                    formFile.CopyTo(fileStream);
-                }
-            }
-
-
             var result = _filesFacade.PostFileService
                 .Execute(new Core.Application.Services.Files.Commands.PostFile.RequestPostFileServiceDto
                 {
                     Filename = Filename,
-                    FilePart = filepartcountfromdatabase,
+                    //FilePart = filepartcountfromdatabase,
                     Start = Start,
                     FilePartCount = FilePartCount,
+                    File = formFile,
                 });
             /////////////////////////////////////////
             System.Threading.Thread.Sleep(100);

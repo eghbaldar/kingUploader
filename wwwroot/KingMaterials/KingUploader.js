@@ -1,4 +1,4 @@
-
+//------------------------------------------------------------- variables Section
 const eachCHUNK = 1000; // Based on KB // e.g. if you add 1000 in this variable, it is equalavent to (1000*1024)=>Byte // the volume of each chunk for uploading // NOTE: the last part may less than 100kb
 var start = 0; // first Byte of your file // this varibale will be increase by [chunkSize]
 var chunkSize; // (BYTE) // keep the volume of each chunk in BYTE (eachCHUNK * 1024)
@@ -10,7 +10,13 @@ var allowSubProgressValue; // subProgress Global Variable
 var increased_value; // main Progress Global Variable
 var current_progress = 0;// main Progress Global Variable
 var filePartCount; // All parts of files after separating
-///////////////////////////////////////////////////
+var fireAgainPause = true; // "This variable prevents problems when a user clicks non-stop on PAUSE & RESUME."
+// resume section (after re-load)
+var resume;
+var resume_filename;
+var resume_Start;
+var resume_filePart;
+//------------------------------------------------------------- Get Clickable label on the main progressbar
 const fileInput = document.getElementById('fileupload1');
 const fileInputWithLabel = document.getElementById('idMainBoxbar');
 fileInput.addEventListener('change', handleFileUpload);
@@ -30,14 +36,7 @@ fileInputWithLabel.addEventListener('click', () => {
             break;
     }    
 });
-
-// resume section (after re-load)
-var resume;
-var resume_filename;
-var resume_Start;
-var resume_filePart;
-// end
-
+//------------------------------------------------------------- End
 // fired when file will be choosen
 function handleFileUpload(event) {
     ///// check the film extension and size
@@ -52,10 +51,8 @@ function handleFileUpload(event) {
         file = event.target.files[0]; // get first file from the [input file]
         chunkSize = 1024 * eachCHUNK; // size of each chunk (1MB)        
         filePartCount = Math.ceil(file.size / chunkSize);
-
         CalcIncreaseValue(file.size); // [increased value] to progress of progressbar
         var chunk = file.slice(start, start + chunkSize);
-
         allowSubProgressValue = true; // SubProgressbar is ready now!
         actionSubProgressbar(); // SubProgressbar is fired!
         uploadChunk(chunk, chunkSize, file.name, filePartCount); // the main function is fired!
@@ -68,15 +65,13 @@ function handleFileUpload(event) {
             alert('The selected file is not the exact file.');
             return; // exit function!
         } else {
-            //alert(resume_Start);
-            //return;
             intervalId = setInterval(actionSubProgressbar, 1); // increase the speed of sub progressbar
             continue_or_pause_client = true; // set default value
             file = event.target.files[0]; // get first file from the [input file]
             chunkSize = 1024 * eachCHUNK; // size of each chunk (1MB)
             filePartCount = Math.ceil(file.size / chunkSize);
             CalcIncreaseValue(file.size); // [increased value] to progress of progressbar
-            current_progress = CalcLeftResumeValue(file.size);
+            current_progress = CalcLeftResumeValue();
             //=============================================
             // The following is the most important, because when we stop the upload process
             // the last START point will be stored, and after fetching again, we have to increase its value
@@ -92,7 +87,6 @@ function handleFileUpload(event) {
             $("#btncontinue_or_pause_client").css('visibility', 'visible');
             $("#BoxSubProgress").css('visibility', 'visible');
             $("#btncontinue_or_pause_client").html('Pause');
-            //$(".progress").css('background-image', '')
         }
     }
 }
@@ -101,7 +95,6 @@ function handleFileUpload(event) {
 var timestamp = new Date().getTime();
 
 function uploadChunk(chunk, chunkSize, filename, filePartCount) {
-
     if (continue_or_pause_client) {
         var postData = new FormData();
         postData.append("file", chunk);
@@ -144,7 +137,6 @@ function uploadChunk(chunk, chunkSize, filename, filePartCount) {
                         actionProgressbar(true);
                     }
                     else {
-                        //chunkSize = chunkSize - chunk2.size;
                         chunkSize = chunk2.size;
                         chunk2 = file.slice(start, start + chunkSize);
                         actionProgressbar(false); // if the last part is less than [eachCHUNK] KB
@@ -161,19 +153,15 @@ function uploadChunk(chunk, chunkSize, filename, filePartCount) {
                 }
             },
             error: function (request, status, error) {
-                //alert('request:' + request.responseText + ';err:' + error);
             }
         });
     }
 }
-var fireAgainPause = true;
 // pausing
 function pause() {
-    if (fireAgainPause) { // "This variable prevents problems when a user clicks non-stop on PAUSE & RESUME."
+    if (fireAgainPause) {
         continue_or_pause_client = !continue_or_pause_client;
         if (!continue_or_pause_client) {
-            //$("#dynamic").removeClass("progress-bar-success");
-            //$("#dynamic").addClass("progress-bar-success-gray");
             $("#dynamic").prop("hidden", true);
             $("#btncontinue_or_pause_client").html('Resume');
             $("#idMainBoxbar").text("Paused");
@@ -182,8 +170,6 @@ function pause() {
         else {
             $("#btncontinue_or_pause_client").html('Pause');
             intervalId = setInterval(actionSubProgressbar, 1); // increase the speed of sub progressbar
-            //$("#dynamic").removeClass("progress-bar-success-gray");
-            //$("#dynamic").addClass("progress-bar-success");
             $("#dynamic").prop("hidden", false);
             allowSubProgressValue = true;
             $("#idMainBoxbar").text("Uploading ...");
@@ -214,19 +200,13 @@ function merging() {
 // main progressbar
 function actionProgressbar(lastPartState) {
     if (lastPartState) {
-        //alert(current_progress);
         if (continue_or_pause_client) current_progress += increased_value;
         var showedValue = parseFloat(current_progress.toFixed(2));
-        $("#dynamic")
-            .css("width", showedValue + "%")
-            .attr("aria-valuenow", showedValue);
+        $("#dynamic").css("width", showedValue + "%").attr("aria-valuenow", showedValue);
         $("#idMainBoxbar").text(showedValue + "%");
     }
     else {
-        $("#dynamic")
-            .css("width", 100 + "%")
-            .attr("aria-valuenow", 100);
-        //.text(100 + "%");
+        $("#dynamic").css("width", 100 + "%").attr("aria-valuenow", 100);
         $("#idMainBoxbar").text("100%");
         allowSubProgressValue = false;
         $("#btnMerge").css('visibility', 'visible');
@@ -244,13 +224,7 @@ function CalcIncreaseValue(fileSize) {
 }
 
 // CalcLeftResumeValue // [increased_value] is going to be filled by the following function
-function CalcLeftResumeValue(fileSize) {
-    //var kb = fileSize / 1024; // convert to KB
-    //var eachKb = Math.ceil(kb / eachCHUNK);
-    //// [resume_Start] is fetched by database
-    //var kb_resume = parseInt(resume_Start) / 1024;
-    //return (kb_resume / eachKb);
-    ///////////////////////////////////////////////
+function CalcLeftResumeValue() {
     return ((resume_filePart * 100) / filePartCount);
 }
 
@@ -268,7 +242,6 @@ function actionSubProgressbar() {
             setTimeout(resetProgressBar, 100); // Delay reset after completion of progress animation
         }
     }
-    //$(".progress").css('background-image', 'linear-gradient(57deg, #808080 27.59%, #939393 27.59%, #939393 50%, #808080 50%, #808080 77.59%, #939393 77.59%, #939393 100%)')
 }
 
 function resetProgressBar() {
@@ -281,40 +254,16 @@ function resetProgressBar() {
     else $("#idMainBoxbar").text("Paused");
 }
 progressBar.classList.add('fill');
-//intervalId = setInterval(actionSubProgressbar, 50); // Initial speed (update every 10 milliseconds)
-
-//function actionSubProgressbar() {
-//    var elem = document.getElementById("myBar");
-//    var id = setInterval(frame, 100);
-//    function frame() {
-//        if (allowSubProgressValue) {
-//            if (subProgressValue >= 100) {
-//                clearInterval(id);
-//                subProgressValue = 0;
-//                actionSubProgressbar();
-//            } else {
-//                subProgressValue++;
-//                elem.style.width = subProgressValue + '%';
-//            }
-//        } else {
-//            elem.style.width = '0%';
-//            elem.innerHTML = '';
-//        }
-//    }
-//}
 ///////////////////////////////////////////////////////////////////////////////////////// End of Sub Progressbar
-// load page and resume
+
 $(document).ready(function () {
     // check if the last film is uploaded or not
     // the filename must be getting with a parameter such as querystring
     // but here we assume the left file is "test.jpg"
-
-    var postData = { filename: 'test.jpg' };
     $.ajax({
         contentType: 'application/x-www-form-urlencoded',
         dataType: 'json',
         type: 'POST',
-        data: postData,
         url: 'Home/CheckResume',
         success: function (data) {
             if (data.resume) {
@@ -330,12 +279,6 @@ $(document).ready(function () {
                 $("#BoxSubProgress").css('visibility', 'visible');
                 $("#idMainBoxbar").text("choose the exact file");
                 $(".progress").addClass("progress-bar-big");
-                //.css('background-image', 'linear-gradient(57deg, #808080 27.59%, #939393 27.59%, #939393 50%, #808080 50%, #808080 77.59%, #939393 77.59%, #939393 100%)')
-                //.css('background-size', '28.62px 44.07px');
-                //
-                //var resumeVolume = parseFloat(((resume_filePart * 100) / data.filePartCount).toFixed(2));
-                //$("#dynamic").css("width", resumeVolume + "%").attr("aria-valuenow", resumeVolume);
-                //$("#idMainBoxbar").text(resumeVolume + "%");
                 $("#idMainBoxbar").text("Choose the same file ...");
             }
             else {
