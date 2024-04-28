@@ -1,5 +1,6 @@
 ﻿using KingUploader.Core.Application.Interfaces.Context;
 using KingUploader.Core.Application.Services.Common;
+using KingUploader.Core.Application.Services.FileSignatureValidator;
 using Microsoft.AspNetCore.Http;
 
 namespace KingUploader.Core.Application.Services.Files.Commands.PostFile
@@ -14,8 +15,9 @@ namespace KingUploader.Core.Application.Services.Files.Commands.PostFile
         }
         public ResultPostFileServiceDto Execute(RequestPostFileServiceDto req)
         {
+            ///////////////////////////////////////////////////////////// check size and extention
             var resultCheckFileSizeExtension = CheckSizeExtension(req.FilePartCount,req.Filename);
-            if(!resultCheckFileSizeExtension.Success) { return new ResultPostFileServiceDto { Message = resultCheckFileSizeExtension.Message, Result = 0 }; };
+            if(!resultCheckFileSizeExtension.Success) { return new ResultPostFileServiceDto { Message = resultCheckFileSizeExtension.Message, Result = 0 }; };            
             /////////////////////////////////////////////////////////////
             int filepartcountfromdatabase = Upload(req.File,req.Filename);
 
@@ -56,7 +58,17 @@ namespace KingUploader.Core.Application.Services.Files.Commands.PostFile
                     }
                 }
                 else
-                {  // insert
+                {
+                    ///////////////////////////////////////////////////////////// check file signature
+                    //// check only the first chunk of the file is enough!
+                    //// To ensure the identity of a file during upload and prevent fake extension files from being uploaded in a C# program, you can implement file signature validation. File signatures, also known as magic numbers, are unique identifiers at the beginning of files that indicate their file type. Here's how you can do it:
+                    //// Use C# to read the file's first few bytes to extract its signature. Different file types have different signatures. For example, a PDF file typically starts with the characters %PDF, while an MP4 file starts with ftyp.
+                    //// When dealing with large files uploaded in chunks, it's generally sufficient to validate the file signature in the first chunk. This is because most file formats have their signature at the beginning of the file, often within the first few bytes.
+                    var resultCheckFileSignature = KingUploader.Core.Application.Services.FileSignatureValidator.FileSignatureValidator.ValidateFileSignature(req.File);
+                    if(!resultCheckFileSignature.Success)
+                        return new ResultPostFileServiceDto { Result = 0, Message="File signature is invalid" };
+                    ///////////////////////////////////////////////////////////// 
+                    // insert
                     Core.Domain.File.Files newFile = new Core.Domain.File.Files();
 
                     newFile.FilePart = filepartcountfromdatabase;
