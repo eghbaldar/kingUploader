@@ -1,74 +1,9 @@
-﻿@*Developer: ALIMOHAMMAD EGHBALDAR - eghabldar.ir*@
-@{
-    ViewData["Title"] = "Large Uploader";
-}
-
-@section Styles{
-    <link href="~/KingMaterials/kinguploader.css" rel="stylesheet" />
-    <style>
-        body {
-            padding: 20px;
-        }
-    </style>
-}
-@*the entire process - progressbad *@
-<div class="progress progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-    <div id="idMainBoxbar"></div>
-    <div id="dynamic"
-         class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-        <span id="current-progress"></span>
-    </div>
-</div>
-@*each byte  - progressbad *@
-<div class="w3BoxSubProgress" id="BoxSubProgress">
-    <div id="idBoxbar"></div>
-    <div class="w3BoxSubProgress-grey" id="myBar"></div>
-</div>
-
-<hr />
-<label>Maximume File Size:</label>
-<select id="selectLimitedVolume">
-    <option value="2097152">x&lt;2 MB</option>
-    <option value="20971520">x&lt;20 MB</option>
-    <option value="209715200">x&lt;200 MB</option>
-    <option value="2147483648">x&lt;2 GB</option>
-    <option value="4294967296">x&lt;4 GB</option>
-</select>
-<br />
-<br />
-<label>Desired Extension File:</label>
-<select id="selectExtensions">
-    <option value="jpg">*.jpg</option>
-    <option value="png">*.png</option>
-    <option value="bmp">*.bmp</option>
-    <option value="mp4">*.mp4</option>
-    <option value="mov">*.mov</option>
-    <option value="zip">*.zip</option>
-    <option value="gif">*.gif</option>
-    <option value="rar">*.rar</option>
-</select>
-<br />
-<br />
-<div class="alert alert-danger" role="alert">
-    Note: 1) The acceptable file volume (file size) on the server: x x&lt; 50 mgb
-    <br />
-    Note: 2) The acceptable file extension on the server: *.JPG
-    <br />
-    You have to change it or set a range of sizes and extensions.
-</div>
-<hr />
-<input type="file" id="fileupload1">
-<button type="button" id="btnMerge" class="btn btn-success" onclick="merging()">Merge</button>
-<br />
-<button type="button" class="btn btn-warning" id="btncontinue_or_pause_client" onclick="pause()">Pause</button>
-<br />
-<br />
-<button type="button" class="btn btn-warning" onclick="DeleteDatabaseAndFiles();window.location.reload();">Delete Database & Files
-</button>
-
-
-
-@section Scripts{
-    <script src="~/kingmaterials/kinguploader.js"></script>
-}
-
+﻿<center>
+    <h1>Wellcome to my King Territory</h1>
+    <small>developed by: Alimohammad Eghbaldar</small>
+    <small><a href="https://eghbaldar.ir">eghbaldar.ir</a></small>
+    <hr />
+    <a href="home/large">Large Module Uploader</a>
+    <br/>
+    <a href="home/Small">Small Module Uploader </a>
+</center>

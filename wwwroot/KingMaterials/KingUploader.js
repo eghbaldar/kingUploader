@@ -113,7 +113,7 @@ function uploadChunk(chunk, chunkSize, filename, filePartCount) {
             processData: false,
             type: 'POST',
             data: postData,
-            url: 'Home/Upload',
+            url: '/Home/Upload',
             success: function (data) {
                 if (data.result == 0) {
                     alert(data.message);
@@ -187,7 +187,7 @@ function merging() {
         contentType: false,
         dataType: false,
         type: 'POST',
-        url: 'Home/Merge',
+        url: '/Home/Merge',
         success: function () {
             //alert('1');
         },
@@ -264,7 +264,7 @@ $(document).ready(function () {
         contentType: 'application/x-www-form-urlencoded',
         dataType: 'json',
         type: 'POST',
-        url: 'Home/CheckResume',
+        url: '/Home/CheckResume',
         success: function (data) {
             if (data.resume) {
                 //
@@ -324,7 +324,7 @@ function DeleteDatabaseAndFiles() {
         content: 'application/x-www-form-urlencoded',
         contentType: 'json',
         type: 'POST',
-        url: 'Home/Delete',
+        url: '/Home/Delete',
         success: function (data) {
         },
         error: function (request, status, error) {

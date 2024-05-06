@@ -21,6 +21,12 @@ namespace KingUploader.Controllers
         {
             return View();
         }
+        ///////////////////////////////////////////////////// Large Module
+        [HttpGet]
+        public IActionResult Large()
+        {
+            return View();
+        }
         [HttpPost]
         public IActionResult Upload(string Filename, string Start, int FilePartCount)
         {
@@ -119,5 +125,11 @@ namespace KingUploader.Controllers
             return Json(_filesFacade.DeleteFileAndDatabaseRecordsService.Execute());
         }
 
+        ///////////////////////////////////////////////////// Small Module
+        [HttpGet]
+        public IActionResult Small()
+        {
+            return View();
+        }
     }
 }
