@@ -21,6 +21,22 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\js\\signalr\\dist\\browser\\signalr.js",
+      "PackagePath": "staticwebassets\\js\\signalr\\dist\\browser\\signalr.js"
+    },
+    {
+      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\js\\signalr\\dist\\browser\\signalr.js.map",
+      "PackagePath": "staticwebassets\\js\\signalr\\dist\\browser\\signalr.js.map"
+    },
+    {
+      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\js\\signalr\\dist\\browser\\signalr.min.js",
+      "PackagePath": "staticwebassets\\js\\signalr\\dist\\browser\\signalr.min.js"
+    },
+    {
+      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\js\\signalr\\dist\\browser\\signalr.min.js.map",
+      "PackagePath": "staticwebassets\\js\\signalr\\dist\\browser\\signalr.min.js.map"
+    },
+    {
       "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
