@@ -1,0 +1,26 @@
+﻿#progress {
+    position: relative;
+    width: 100px;
+    height: 20px;
+    border: 1px solid #cccccc;
+    color: white;
+}
+
+#curprogress {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #0000ff;
+    height: 100%;
+    width: 0%;
+    font-size: 0px;
+}
+
+#progressNumber {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    margin: 0;
+}

@@ -5,12 +5,20 @@
       "PackagePath": "staticwebassets\\KingUploader.bundle.scp.css"
     },
     {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\KingMaterials\\KingUploader.css",
-      "PackagePath": "staticwebassets\\KingMaterials\\KingUploader.css"
+      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\KingMaterials\\KingUploaderLarge.css",
+      "PackagePath": "staticwebassets\\KingMaterials\\KingUploaderLarge.css"
     },
     {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\KingMaterials\\KingUploader.js",
-      "PackagePath": "staticwebassets\\KingMaterials\\KingUploader.js"
+      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\KingMaterials\\KingUploaderLarge.js",
+      "PackagePath": "staticwebassets\\KingMaterials\\KingUploaderLarge.js"
+    },
+    {
+      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\KingMaterials\\KingUploaderSmall.css",
+      "PackagePath": "staticwebassets\\KingMaterials\\KingUploaderSmall.css"
+    },
+    {
+      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\KingMaterials\\KingUploaderSmall.js",
+      "PackagePath": "staticwebassets\\KingMaterials\\KingUploaderSmall.js"
     },
     {
       "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\css\\site.css",
@@ -19,10 +27,6 @@
     {
       "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
-    },
-    {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\7b78e0cbc9-avatar.jpg.part1",
-      "PackagePath": "staticwebassets\\files\\7b78e0cbc9-avatar.jpg.part1"
     },
     {
       "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\js\\site.js",
