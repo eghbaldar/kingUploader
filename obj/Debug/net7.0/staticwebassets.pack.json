@@ -29,6 +29,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\_DSC0096bw.jpg.part1",
+      "PackagePath": "staticwebassets\\files\\_DSC0096bw.jpg.part1"
+    },
+    {
       "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
