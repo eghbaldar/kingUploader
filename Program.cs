@@ -8,7 +8,6 @@ using KingUploader.Core.Persistence;
 using Microsoft.EntityFrameworkCore;
 using KingUploader.Core.Application.Interfaces.Facades;
 using KingUploader.Core.Application.Services.Files.FacadePattern;
-using KingUploader.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,9 +16,6 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IDataBaseContext, DataBaseContext>();
 builder.Services.AddScoped<IFilesFacade, FilesFacade>();
-
-builder.Services.AddSignalR();
-
 
 var ConnStr = builder.Configuration.GetConnectionString("ConnStr");
 builder.Services.AddEntityFrameworkSqlServer().AddDbContext<DataBaseContext>(x => x.UseSqlServer(ConnStr));
@@ -50,12 +46,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapHub<BroadCastHub>("/broadcast");
-});
-
 
 app.Run();

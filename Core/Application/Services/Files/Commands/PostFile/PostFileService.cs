@@ -177,7 +177,7 @@ namespace KingUploader.Core.Application.Services.Files.Commands.PostFile
             }
             else
             {
-                if (Path.GetExtension(filename).Replace(".", "").ToLower() != "zip".ToLower())
+                if (Path.GetExtension(filename).Replace(".", "").ToLower() != "jpg".ToLower())
                 {
                     return new ResultDto
                     {

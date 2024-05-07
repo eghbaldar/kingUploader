@@ -1,199 +1,218 @@
 ﻿@{
     ViewData["Title"] = "File Upload";
-}   
-<style>
-    .fileUpload {
-        position: relative;
-        overflow: hidden;
-        margin: 0;
-    }
+}
 
-        .fileUpload input.upload {
-            position: absolute;
-            top: 0;
-            right: 0;
-            margin: 0;
-            padding: 0;
-            font-size: 20px;
-            cursor: pointer;
+<input type="file" id="fileuploadSmall">
+
+
+<div id="progress" style="position: relative; width: 100px; height: 20px; border: 1px solid #cccccc;color:white;">
+    <p id="curprogress" style="position: absolute; left: 0; top: 0; background-color: #0000ff; height: 100%; width: 0%; font-size: 0px;">&nbsp;</p>
+    <p id="progressNumber" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; margin: 0;">50%</p>
+</div>
+    
+
+
+<br />
+<br />
+<button type="button" id="btnMerge" class="btn btn-success" onclick="merging()">Merge</button>
+<br />
+<br />
+<button type="button" class="btn btn-warning" onclick="DeleteDatabaseAndFiles();window.location.reload();">
+    Delete Database & Files
+</button>
+
+@section Styles{
+    <style>
+
+        .Progressbar {
+            position: relative;
+            height: 32px;
+            border-radius: 1000px;
+            background-color: #484848;
+            clip-path: inset(0 0 0 0 round 1000px);
+        }
+
+        .Progressbar__value {
+            height: 32px;
+            transition: width 0.4s ease-in-out;
+            border-radius: 1000px 0 0 1000px;
+            background-color: #ff4c65;
+            will-change: width;
+        }
+
+        .Progressbar > progress {
             opacity: 0;
-            filter: alpha(opacity=0);
+            width: 1px;
+            height: 1px;
+            position: absolute;
+            pointer-events: none;
         }
+    </style>
+}
 
-
-</style>
-
-<div class="row">
-    <div class="col-md-6">
-        <div class="input-group">
-            <input id="uploadFile" placeholder="" disabled="disabled" class="form-control" style="height:36px" />
-            <div class="input-group-btn">
-                <div class="fileUpload btn btn-info">
-                    <span>...</span>@*accept=".csv"*@
-                    <input type="file" name="fileToUpload" id="fileToUpload" class="upload" onchange="fileToUploadOnchange()" multiple />
-                </div>
-            </div>
-        </div>
-    </div>
-    <input type="button" class="btn btn-info btn-sm" value="Upload" id="btnUpload" />
-</div>
-<p></p>
-<div class="text-center">
-
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-bordered table-hover" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>S/N</th>
-                        <th>Company</th>
-                        <th>Category</th>
-                        <th>City</th>
-                        <th>Funded Date</th>
-                        <th>Currency</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<div id="progressModal" class="modal fade modal-center-c" tabindex="-1" role="dialog" data-backdrop="static">
-    <div class="modal-dialog modal-lg" style="width: 50% !important;   top: 40vh;">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-10">
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-striped" role="progressbar" id="progress_bar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <span>Count: <text id="uploadCount">0</text></span>
-                    </div>
-                </div>
-            </div>
-        </div> <!-- / .modal-content -->
-    </div> <!-- / .modal-dialog -->
-</div> <!-- / .modal -->
 @section Scripts{
-    <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script>
-        var connection = new signalR.HubConnectionBuilder().withUrl("/broadcast").build();
-        connection.on("feedBack", function (model) {
-            $("#progress_bar").css("width", `${model.currentPercent}%`);
-            $("#uploadCount").html(model.uploadCount);
-        });
-        connection.start().then(function () {
-            console.log("Sinalr Connected");
-        }).catch(function (err) {
-            console.log(err.toString());
-        });
 
-        $(document).ready(function () {
-            defaultTableContent();
-        })
-        $("#btnUpload").click(function (e) {
-            e.preventDefault();
-            uploadFile();
+        //------------------------------------------------------------- variables Section
+        const eachCHUNK = 1000; // Based on KB // e.g. if you add 1000 in this variable, it is equalavent to (1000*1024)=>Byte // the volume of each chunk for uploading // NOTE: the last part may less than 100kb
+        var start = 0; // first Byte of your file // this varibale will be increase by [chunkSize]
+        var chunkSize; // (BYTE) // keep the volume of each chunk in BYTE (eachCHUNK * 1024)
+        var file; // Your file
+        var increased_value; // main Progress Global Variable
+        var current_progress = 0;// main Progress Global Variable
+        var filePartCount; // All parts of files after separating
+        // progressbar section
 
-        });
-        function defaultTableContent() {
-            var empltyTableTemplate = $("<tr></tr>");
-            var placeholder = "<td colSpan='7'><p>No Data</p></td>";
-            empltyTableTemplate.html(placeholder);
-            $("#tableBody").html(empltyTableTemplate);
-        }
-        function fileToUploadOnchange() {
-            $this = document.getElementById("fileToUpload");
-            fileSelected($this);
-        }
-        function fileSelected(input) {
-            var file = document.getElementById('fileToUpload').files[0];
+        //-------------------------------------------------------------
+        const fileInput = document.getElementById('fileuploadSmall');
+        fileInput.addEventListener('change', handleFileUpload);
+        //-------------------------------------------------------------
 
-            var ext = input.value.split('.');
-            ext = ext[ext.length - 1].toLowerCase();
-            var arrayExtensions = ['csv'];
-            if (arrayExtensions.lastIndexOf(ext.toLowerCase()) == -1) {
-                alert("You can only upload .CSV File");
-                input.value = '';
-                document.getElementById("uploadFile").value = '';
+        //$(document).ready(function () {
+        //    progress.value = 0;
+        //});
+        // set progressbar value
+
+        // get the fileupload handler
+        function handleFileUpload(event) {
+            ///// check the film extension and size
+            var checkSomeErrors = checkStandardVolumeExtentsion(fileInput);
+            if (checkSomeErrors) {
+                alert(checkSomeErrors);
                 return;
             }
-            document.getElementById("uploadFile").value = file.name;
-            if (file) {
-                var fileSize = 0;
-                if (file.size > 1024 * 1024)
-                    fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
-                else
-                    fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
-            }
+            // end
+            file = event.target.files[0]; // get first file from the [input file]
+            chunkSize = 1024 * eachCHUNK; // size of each chunk (1MB)
+            filePartCount = Math.ceil(file.size / chunkSize);
+            CalcIncreaseValue(file.size); // [increased value] to progress of progressbar
+            actionProgressbar(true); // the main Progressbar is started!
+            var chunk = file.slice(start, start + chunkSize);
+            uploadChunk(chunk, chunkSize, file.name, filePartCount); // the main function is fired!            
         }
 
-        function uploadFile() {
-            var file = document.getElementById('fileToUpload').files[0];
-            if (file) {
-                $("#progressModal").modal("show");
-                var url = '@Url.Action("UploadFile", "Home")';
-                var fd = new FormData();
-                fd.append("fileToUpload", file);
-                var xhr = new XMLHttpRequest();
-                xhr.addEventListener("load", uploadComplete, false);
-                xhr.addEventListener("error", uploadFailed, false);
-                xhr.addEventListener("abort", uploadCanceled, false);
-                xhr.open("POST", url);
-                xhr.send(fd);
-            } else {
-                alert("You are can not upload an empty file");
-            }
-        }
+        //upload
+        function uploadChunk(chunk, chunkSize, filename, filePartCount) {
+            var postData = new FormData();
+            postData.append("file", chunk);
+            postData.append("ChunkSize", chunkSize);
+            postData.append("Filename", filename);
+            postData.append("Start", start);
+            postData.append("FilePartCount", filePartCount);
 
-        function uploadComplete(evt) {
-            var response = JSON.parse(evt.target.response);
-            $("#progressModal").modal("hide");
-            ResetUploadModal();
-            if (response.error) {
-                alert(response.message);
-                return;
-            }
-            populateTableData(response.data);
+            $.ajax({
+                contentType: false,
+                processData: false,
+                type: 'POST',
+                data: postData,
+                url: '/Home/Upload',
+                success: function (data) {
+                    if (data.result == 0) {
+                        alert(data.message);
+                        location.reload();
+                    }
+                    if (data.result == 1) {
+                        start += chunkSize; // chunkSize is not interval, is an index!
 
-        }
-        function populateTableData(data) {
-            if (data.length <= 0) return;
-            $("#tableBody").html('');
-            $.each(data, function (i, val) {
-                let tableRow = $("<tr></tr>");
-                let tablecells = `<td>${i + 1}</td>` +
-                    `<td>${val.company}</td>` +
-                    `<td>${val.category}</td>` +
-                    `<td>${val.city}</td>` +
-                    `<td>${val.date}</td>` +
-                    `<td>${val.currency}</td>` +
-                    `<td>${val.strAmount}</td>`;
-                tableRow.html(tablecells);
-                $("#tableBody").append(tableRow[0]);
+                        var chunk2 = file.slice(start, start + chunkSize);
+
+                        if (chunk2.size >= chunkSize) {
+                            actionProgressbar(true);
+                        }
+                        else {
+                            chunkSize = chunk2.size;
+                            chunk2 = file.slice(start, start + chunkSize);
+                            actionProgressbar(false); // if the last part is less than [eachCHUNK] KB
+                        }
+
+                        if (start < file.size) {
+                            uploadChunk(chunk2, chunkSize, file.name, filePartCount);
+                        }
+                    }
+                    if (data.result == 2) {
+                        actionProgressbar(false);
+                    }
+                },
+                error: function (request, status, error) {
+                }
             });
         }
-        function uploadFailed(evt) {
-            $("#progressModal").modal("hide");
-            ResetUploadModal();
-            alert("There was an error attempting to upload the file");
+
+        //Progressbar actio
+        function actionProgressbar(lastPartState) {
+            if (lastPartState) {
+                current_progress = current_progress + increased_value;
+                var showedValue = parseFloat(current_progress.toFixed(2));                
+                $("#curprogress").css("width", `${current_progress}%`)
+                $("#progressNumber").text(`${showedValue}%`);
+            }
+            else {
+                $("#curprogress").css("width", "100%");
+                $("#progressNumber").text("100%");
+            }
         }
-        function uploadCanceled(evt) {
-            $("#progressModal").modal("hide");
-            ResetUploadModal();
-            alert("The upload has been canceled by the user or the browser dropped the connection")
+        // check the file size and extension
+        function checkStandardVolumeExtentsion(fileInput) {
+
+            var eVolume = "200000000";
+            var eExtension = "jpg";
+
+            var file_extension = /[^.]+$/.exec(fileInput.files[0].name); // get only the file extension
+
+            // check the file size at first
+            if (fileInput.files[0].size < eVolume) {
+                // check the file extension
+                if (eExtension.toLowerCase() == file_extension.toString().toLowerCase()) {
+                    return null;// everything is Ok
+                }
+                else {
+                    fileInput.value = null;
+                    return "(client side) => Check your file extension!"; // error
+                }
+            }
+            else {
+                fileInput.value = null;
+                return "(client side) => Check your file size!"; // error
+            }
         }
-        function ResetUploadModal() {
-            document.getElementById("uploadFile").value = '';
-            document.getElementById("fileToUpload").value = null;
-            $("#progressContainer").hide();
-            $("#progress_bar").css("width", "-1%");
+
+        // CalcIncreaseValue
+        function CalcIncreaseValue(fileSize) {
+            var kb = fileSize / 1024; // convert to KB
+            var eachKb = Math.ceil(kb / eachCHUNK); // how many places does it have in 100% progressbar?
+            var eachUnit = 100 / eachKb; // how much KB does include in each part (eachKb)?
+            increased_value = eachUnit;
+        }
+
+        // delete database and files
+        function DeleteDatabaseAndFiles() {
+            $.ajax({
+                content: 'application/x-www-form-urlencoded',
+                contentType: 'json',
+                type: 'POST',
+                url: '/Home/Delete',
+                success: function (data) {
+                },
+                error: function (request, status, error) {
+                    //alert('request:' + request.responseText + ';err:' + error);
+                }
+            });
+        }
+
+        // Merging
+        function merging() {
+            $.ajax({
+                contentType: false,
+                dataType: false,
+                type: 'POST',
+                url: '/Home/Merge',
+                success: function () {
+                    //alert('1');
+                },
+                error: function (request, status, error) {
+                    //alert('request:' + request.responseText + ';err:' + error);
+                }
+            });
         }
     </script>
-
 }

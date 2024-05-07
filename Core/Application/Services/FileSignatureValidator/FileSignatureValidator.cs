@@ -17,7 +17,7 @@ namespace KingUploader.Core.Application.Services.FileSignatureValidator
                     byte[] fileBytes = ms.ToArray();
 
                     // Check the file signature
-                    if (IsPDF(fileBytes) || IsMP4(fileBytes) || IsZIP(fileBytes) || IsRAR(fileBytes))
+                    if (IsPDF(fileBytes) || IsMP4(fileBytes) || IsZIP(fileBytes) || IsRAR(fileBytes) || IsJPEG(fileBytes) || IsPNG(fileBytes))
                     {
                         return new ResultDto
                         {
@@ -69,5 +69,17 @@ namespace KingUploader.Core.Application.Services.FileSignatureValidator
             // RAR file signature: RAR file format signature (0x52 0x61 0x72 0x21)
             return header[0] == 0x52 && header[1] == 0x61 && header[2] == 0x72 && header[3] == 0x21;
         }
+        private static bool IsJPEG(byte[] header)
+        {
+            // Check if the file signature matches a JPEG file
+            return header[0] == 0xFF && header[1] == 0xD8 && header[2] == 0xFF;
+        }
+        private static bool IsPNG(byte[] header)
+        {
+            // Check if the file signature matches a PNG file
+            return header[0] == 0x89 && header[1] == 0x50 && header[2] == 0x4E && header[3] == 0x47 &&
+                   header[4] == 0x0D && header[5] == 0x0A && header[6] == 0x1A && header[7] == 0x0A;
+        }
+
     }
 }

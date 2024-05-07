@@ -146,7 +146,7 @@ function uploadChunk(chunk, chunkSize, filename, filePartCount) {
                         uploadChunk(chunk2, chunkSize, file.name, filePartCount);
                         fireAgainPause = true;
                     }
-                    resetProgressBar();
+                    //resetProgressBar();
                 }
                 if (data.result == 2) {
                     actionProgressbar(false);
@@ -207,7 +207,7 @@ function actionProgressbar(lastPartState) {
     }
     else {
         $("#dynamic").css("width", 100 + "%").attr("aria-valuenow", 100);
-        $("#idMainBoxbar").text("100%");
+        $("#idMainBoxbar").text("Uploaded");
         allowSubProgressValue = false;
         $("#btnMerge").css('visibility', 'visible');
         $("#btncontinue_or_pause_client").css('visibility', 'hidden'); // Hide [pause-continue botton] after being completed the upload process (100%)
