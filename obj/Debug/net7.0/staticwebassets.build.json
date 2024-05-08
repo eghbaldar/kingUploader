@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "bn0fu+oAYh1WPWvjaTphRCcPu1lhnaDjXMCEZv1iHus=",
+  "Hash": "9zaUpfSNuxF5bg6XAEhh2yvpse6ZQo8GrnApnH17ebA=",
   "Source": "KingUploader",
   "BasePath": "_content/KingUploader",
   "Mode": "Default",
@@ -83,23 +83,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
-    },
-    {
-      "Identity": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\_DSC0096bw.jpg.part1",
-      "SourceId": "KingUploader",
-      "SourceType": "Discovered",
-      "ContentRoot": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\",
-      "BasePath": "_content/KingUploader",
-      "RelativePath": "files/_DSC0096bw.jpg.part1",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\files\\_DSC0096bw.jpg.part1"
     },
     {
       "Identity": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\js\\site.js",

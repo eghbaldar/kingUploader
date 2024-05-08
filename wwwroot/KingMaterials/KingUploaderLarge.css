@@ -51,7 +51,11 @@
     text-shadow: 0px 2px 4px rgba(0,0,0,0.38);
     cursor:pointer;
 }
-
+@media (max-width: 680px) {
+    #idMainBoxbar {
+        font-size: 22px;
+    }
+}
 #idBoxbar {
     position: absolute;
     padding-bottom: 1px !important;
