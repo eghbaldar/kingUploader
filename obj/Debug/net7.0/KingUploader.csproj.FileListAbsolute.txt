@@ -190,9 +190,10 @@ D:\_PROJECT_\kingUploader\kingUploader\obj\Debug\net7.0\scopedcss\Pages\Shared\_
 D:\_PROJECT_\kingUploader\kingUploader\obj\Debug\net7.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 D:\_PROJECT_\kingUploader\kingUploader\obj\Debug\net7.0\scopedcss\bundle\KingUploader.styles.css
 D:\_PROJECT_\kingUploader\kingUploader\obj\Debug\net7.0\scopedcss\projectbundle\KingUploader.bundle.scp.css
-D:\_PROJECT_\kingUploader\kingUploader\obj\Debug\net7.0\KingUploader.csproj.CopyComplete
 D:\_PROJECT_\kingUploader\kingUploader\obj\Debug\net7.0\KingUploader.dll
 D:\_PROJECT_\kingUploader\kingUploader\obj\Debug\net7.0\refint\KingUploader.dll
 D:\_PROJECT_\kingUploader\kingUploader\obj\Debug\net7.0\KingUploader.pdb
 D:\_PROJECT_\kingUploader\kingUploader\obj\Debug\net7.0\KingUploader.genruntimeconfig.cache
 D:\_PROJECT_\kingUploader\kingUploader\obj\Debug\net7.0\ref\KingUploader.dll
+D:\_PROJECT_\kingUploader\kingUploader\obj\Debug\net7.0\KingUploader.sourcelink.json
+D:\_PROJECT_\kingUploader\kingUploader\obj\Debug\net7.0\KingUplo.DD0A70ED.Up2Date
