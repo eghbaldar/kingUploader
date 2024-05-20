@@ -50,6 +50,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxMYXJnZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/_PROJECT_/kingUploader/kingUploader/Views/Home/MultiSmallerModule.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxNdWx0aVNtYWxsZXJNb2R1bGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/_PROJECT_/kingUploader/kingUploader/Views/Home/Small.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTbWFsbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

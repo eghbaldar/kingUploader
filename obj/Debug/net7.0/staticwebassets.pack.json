@@ -13,6 +13,14 @@
       "PackagePath": "staticwebassets\\KingMaterials\\KingUploaderLarge.js"
     },
     {
+      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\KingMaterials\\KingUploaderMulti.css",
+      "PackagePath": "staticwebassets\\KingMaterials\\KingUploaderMulti.css"
+    },
+    {
+      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\KingMaterials\\KingUploaderMulti.js",
+      "PackagePath": "staticwebassets\\KingMaterials\\KingUploaderMulti.js"
+    },
+    {
       "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\KingMaterials\\KingUploaderSmall.css",
       "PackagePath": "staticwebassets\\KingMaterials\\KingUploaderSmall.css"
     },

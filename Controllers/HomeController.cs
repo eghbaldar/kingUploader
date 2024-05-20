@@ -45,7 +45,7 @@ namespace KingUploader.Controllers
                     File = formFile,
                 });
             /////////////////////////////////////////
-            System.Threading.Thread.Sleep(3000);
+            System.Threading.Thread.Sleep(1000);
             ////////////////////////////////////////
 
             return Json(result);
@@ -131,6 +131,12 @@ namespace KingUploader.Controllers
         ///////////////////////////////////////////////////// Small Module
         [HttpGet]
         public IActionResult Small()
+        {
+            return View();
+        }
+        ///////////////////////////////////////////////////// Multi Small Uploader
+        [HttpGet]
+        public IActionResult MultiSmallerModule()
         {
             return View();
         }

@@ -1,0 +1,60 @@
+﻿
+1
+<hr />
+<div class="kingMultiUplaoder">
+    <input type="file" id="fileuploadSmall1">
+    <div id="progress1" class="progress">
+        <p id="curprogress1" class="fileuploadSmall1 curprogress">&nbsp;</p>
+        <p id="progressNumber1" class="fileuploadSmall1 progressNumber">0%</p>
+    </div>
+</div>
+
+2
+<hr />
+<div class="kingMultiUplaoder">
+    <input type="file" id="fileuploadSmall2">
+    <div id="progress2" class="progress">
+        <p id="curprogress2" class="fileuploadSmall2 curprogress">&nbsp;</p>
+        <p id="progressNumber2" class="fileuploadSmall2 progressNumber">0%</p>
+    </div>
+</div>
+
+3
+<hr />
+<div class="kingMultiUplaoder">
+    <input type="file" id="fileuploadSmall3">
+    <div id="progress3" class="progress">
+        <p id="curprogress3" class="fileuploadSmall3 curprogress">&nbsp;</p>
+        <p id="progressNumber3" class="fileuploadSmall3 progressNumber">0%</p>
+    </div>
+</div>
+
+
+4
+<hr />
+<div class="kingMultiUplaoder">
+    <input type="file" id="fileuploadSmall4">
+    <div id="progress4" class="progress">
+        <p id="curprogress4" class="fileuploadSmall4 curprogress">&nbsp;</p>
+        <p id="progressNumber4" class="fileuploadSmall4 progressNumber">0%</p>
+    </div>
+</div>
+
+
+
+<br />
+<br />
+<button type="button" id="btnMerge" class="btn btn-success" onclick="merging_smallModule()">Merge</button>
+<br />
+<br />
+<button type="button" class="btn btn-warning" onclick="DeleteDatabaseAndFiles_smallModule();window.location.reload();">
+    Delete Database & Files
+</button>
+
+@section Styles {
+    <link href="~/kingmaterials/kinguploadermulti.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    <script src="~/kingmaterials/kinguploadermulti.js"></script>
+}
