@@ -2,6 +2,7 @@
 using KingUploader.Core.Application.Services.Common;
 using KingUploader.Core.Application.Services.Files.Commands.PostFile;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
 namespace KingUploader.Core.Application.Services.MultiFiles.Commands.PostMultiFiles
 {
@@ -17,6 +18,7 @@ namespace KingUploader.Core.Application.Services.MultiFiles.Commands.PostMultiFi
         public int FilePart { get; set; }
         public string Start { get; set; } // the Byte-Index of file // the first value is ZERO
         public int FilePartCount { get; set; } // All parts of the file that are going to be separated by the basis of "each chunk of file = (1024*100)" will be stored.
+        public Guid SpecificFolderName { get; set; }
     }
     public interface IPostMultiFilesService
     {
@@ -31,21 +33,22 @@ namespace KingUploader.Core.Application.Services.MultiFiles.Commands.PostMultiFi
         }
         public ResultPostMultiFilesServiceDto Execute(RequestPostMultiFilesServiceDto req)
         {
-            ///////////////////////////////////////////////////////////// check size and extention
+            // check size and extention
             var resultCheckFileSizeExtension = CheckSizeExtension(req.FilePartCount, req.Filename);
             if (!resultCheckFileSizeExtension.Success) { return new ResultPostMultiFilesServiceDto { Message = resultCheckFileSizeExtension.Message, Result = 0 }; };
-            /////////////////////////////////////////////////////////////
-            int filepartcountfromdatabase = Upload(req.File, req.Filename);
-
+            // upload the file
+            int filepartcountfromdatabase = Upload(req.File, req.Filename, req.SpecificFolderName);
+            // insert + update
             if (filepartcountfromdatabase > 0)
             {
-                var file = _context.MultiFiles.Where(x => x.Filename == req.Filename).FirstOrDefault();
+                var file = _context.MultiFiles.Where(x => x.SpecificFolderName == req.SpecificFolderName).FirstOrDefault();
                 if (file != null) // update
                 {
 
                     file.FilePart = filepartcountfromdatabase;
                     file.Start = req.Start;
                     file.UploadDate = DateTime.Now;
+                    file.SpecificFolderName = req.SpecificFolderName;
                     if (file.FilePart == req.FilePartCount) file.Done = true;
 
                     if (_context.SaveChanges() > 0)
@@ -91,6 +94,7 @@ namespace KingUploader.Core.Application.Services.MultiFiles.Commands.PostMultiFi
                     newFile.Filename = req.Filename;
                     newFile.Start = req.Start;
                     newFile.FilePartCount = req.FilePartCount;
+                    newFile.SpecificFolderName = req.SpecificFolderName;
                     if (req.FilePartCount == 1) newFile.Done = true; // if the total part of a file (FilePartCount) is only one part
 
                     _context.MultiFiles.Add(newFile);
@@ -128,12 +132,12 @@ namespace KingUploader.Core.Application.Services.MultiFiles.Commands.PostMultiFi
                 };
             }
         }
-        private int Upload(IFormFile file, string orginalFilename)
+        private int Upload(IFormFile file, string orginalFilename, Guid specificfoldername)
         {
             try
             {
                 // create folder
-                string folder = $@"wwwroot\multifiles\";
+                string folder = $@"wwwroot\multifiles\"+ specificfoldername.ToString();
                 var uploadRootFolder = Path.Combine(Environment.CurrentDirectory, folder);
                 if (!Directory.Exists(uploadRootFolder)) Directory.CreateDirectory(uploadRootFolder);
                 // end
@@ -162,6 +166,11 @@ namespace KingUploader.Core.Application.Services.MultiFiles.Commands.PostMultiFi
                 return 0;
             }
 
+        }
+        private class ResultUpdate
+        {
+            public int filepartcountfromdatabase { get; set; }
+            public Guid specificFolderName { get; set; }
         }
         private int GetLastFilePart(string filename)
         {

@@ -1,13 +1,5 @@
 ﻿//------------------------------------------------------------- variables Section
 const eachCHUNK_smallModule = 1000; // Based on KB // e.g. if you add 1000 in this variable, it is equalavent to (1000*1024)=>Byte // the volume of each chunk for uploading // NOTE: the last part may less than 100kb
-//var start = 0; // first Byte of your file // this varibale will be increase by [chunkSize_smallModule]
-//var chunkSize_smallModule; // (BYTE) // keep the volume of each chunk in BYTE (eachCHUNK_smallModule * 1024)
-//var increased_value_smallModule; // main Progress Global Variable
-//var current_progress_smallModule = 0;// main Progress Global Variable
-//var filePartCount_smallModule; // All parts of files after separating
-// progressbar section
-
-//////////////////////////////////////////////////////
 var fileStorage = []; // retrive from fileupload array
 //////////////////////////////////////////////////////
 $('.kingMultiUplaoder').each(function () {
@@ -22,51 +14,43 @@ $('.kingMultiUplaoder').each(function () {
         fileStorage.push(fileEntry); // Store the file entry in the fileStorage array
         handleFileUpload_smallModule(fileInputId);
     });
-
 });
 //-------------------------------------------------------------
-//const fileInput_smallModule = document.getElementById('fileuploadSmall');
-//fileInput_smallModule.addEventListener('change', handleFileUpload_smallModule);
-//-------------------------------------------------------------
 // get the fileupload handler
-
 function handleFileUpload_smallModule(fileInputId) {
-    //////////////////////////////////////////////////////// retrive from fileupload array
+    //retrive from fileupload array
     var fileEntry = fileStorage.find(function (entry) {
         return entry.key === fileInputId;
     });
     var file = fileEntry.value; // Retrieve the file object from the file entry
-    ////////////////////////////////////////////////////
-
-    ///// check the file extension and size
+    // check the file extension and size
     var checkSomeErrors = checkStandardVolumeExtentsion_smallModule(file);
     if (checkSomeErrors) {
         alert(checkSomeErrors);
         return;
     }
-    // end
-
     var chunkSize = 1024 * eachCHUNK_smallModule; // size of each chunk (1MB)
-    $("#" + fileInputId).data("chunkSize", 1024 * eachCHUNK_smallModule);   
-
-
+    $("#" + fileInputId).data("chunkSize", 1024 * eachCHUNK_smallModule);
     var filePartCount = Math.ceil(file.size / chunkSize);
-    $("#" + fileInputId).data("filePartCount", filePartCount);   
+    $("#" + fileInputId).data("filePartCount", filePartCount);
+    var specificfoldername = uuidv4();
+    $("#" + fileInputId).data("specificFolderName", specificfoldername);
 
     CalcIncreaseValue_smallModule(file.size, fileInputId); // [increased value] to progress of progressbar
     actionProgressbar_smallModule(true, fileInputId); // the main Progressbar is started!
-    var chunk = file.slice(0, 0 + chunkSize);    
-    uploadChunk_smallModule(chunk, chunkSize, file.name, filePartCount, fileInputId); // the main function is fired!
+    var chunk = file.slice(0, 0 + chunkSize);
+    uploadChunk_smallModule(chunk, chunkSize, file.name, filePartCount, fileInputId, specificfoldername); // the main function is fired!
 }
 
 //upload
-function uploadChunk_smallModule(chunk, chunkSize, filename, filePartCount, fileInputId) {
+function uploadChunk_smallModule(chunk, chunkSize, filename, filePartCount, fileInputId, specificfoldername) {
     var postData = new FormData();
     postData.append("file", chunk);
     postData.append("chunkSize", chunkSize);
     postData.append("Filename", filename);
     postData.append("start", $("#" + fileInputId).data("start"));
     postData.append("filePartCount", filePartCount);
+    postData.append("SpecificFolderName", specificfoldername);
 
     $.ajax({
         contentType: false,
@@ -81,13 +65,13 @@ function uploadChunk_smallModule(chunk, chunkSize, filename, filePartCount, file
             }
 
             /////////////////////
-            
+
             var fileEntry = fileStorage.find(function (entry) {
                 return entry.key === fileInputId;
             });
             var file = fileEntry.value; // Retrieve the file object from the file entry
             /////////////////////
-            
+
             if (data.result == 1) {
 
                 var chunkSize = $("#" + fileInputId).data("chunkSize");
@@ -107,10 +91,11 @@ function uploadChunk_smallModule(chunk, chunkSize, filename, filePartCount, file
                 }
 
                 if (start < file.size) {
-                    uploadChunk_smallModule(chunk2, chunkSize, file.name, $("#" + fileInputId).data("filePartCount"), fileInputId);
+                    uploadChunk_smallModule(chunk2, chunkSize, file.name, $("#" + fileInputId).data("filePartCount"), fileInputId, $("#" + fileInputId).data("specificFolderName"));
                 }
             }
             if (data.result == 2) {
+                merging(file.name, $("#" + fileInputId).data("specificFolderName"));
                 actionProgressbar_smallModule(false, fileInputId);
             }
         },
@@ -126,13 +111,13 @@ function actionProgressbar_smallModule(lastPartState, fileInputId) {
     var curprogress = $('.' + fileInputId).siblings('.curprogress').attr('id');
 
     if (lastPartState) {
-                
+
         var total = parseInt($("#" + fileInputId).attr("data-currentProgress")) + parseInt($("#" + fileInputId).data("increasedValue"));
 
         $("#" + fileInputId).attr("data-currentProgress", total.toString());
         var currentProgress = total;
 
-        var showedValue = parseFloat(currentProgress.toFixed(2));               
+        var showedValue = parseFloat(currentProgress.toFixed(2));
 
         $("#" + curprogress).css("width", `${currentProgress}%`);
         $("#" + progressNumber).text(`${showedValue}%`);
@@ -142,9 +127,6 @@ function actionProgressbar_smallModule(lastPartState, fileInputId) {
         $("#" + progressNumber).text("100%");
     }
 }
-
-
-
 
 // check the file size and extension
 function checkStandardVolumeExtentsion_smallModule(fileInput) {
@@ -176,7 +158,7 @@ function CalcIncreaseValue_smallModule(fileSize, fileInputId) {
     var kb = fileSize / 1024; // convert to KB
     var eachKb = Math.ceil(kb / eachCHUNK_smallModule); // how many places does it have in 100% progressbar?
     var eachUnit = 100 / eachKb; // how much KB does include in each part (eachKb)?
-    $("#" + fileInputId).data("increasedValue",eachUnit);
+    $("#" + fileInputId).data("increasedValue", eachUnit);
 }
 
 // delete database and files
@@ -195,17 +177,28 @@ function DeleteDatabaseAndMultiFiles() {
 }
 
 // merging_smallModule
-function merging_smallModule() {
+function merging(filename,specificfoldername) {
     $.ajax({
-        contentType: false,
-        dataType: false,
+        contentType: 'application/x-www-form-urlencoded',
+        dataType: 'json',
+        data: { filename: filename, specificfoldername: specificfoldername },
         type: 'POST',
-        url: '/Home/Merge',
-        success: function () {
+        url: '/Home/MergeEachFile',
+        async: true,
+        success: async function () {
             //alert('1');
         },
         error: function (request, status, error) {
             //alert('request:' + request.responseText + ';err:' + error);
         }
     });
+}
+
+function uuidv4() {
+    return 'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'
+        .replace(/[xy]/g, function (c) {
+            const r = Math.random() * 16 | 0,
+                v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
 }

@@ -37,54 +37,6 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\IMG_2406.JPG.part1",
-      "PackagePath": "staticwebassets\\files\\IMG_2406.JPG.part1"
-    },
-    {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\IMG_2406.JPG.part2",
-      "PackagePath": "staticwebassets\\files\\IMG_2406.JPG.part2"
-    },
-    {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\IMG_2406.JPG.part3",
-      "PackagePath": "staticwebassets\\files\\IMG_2406.JPG.part3"
-    },
-    {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\IMG_2406.JPG.part4",
-      "PackagePath": "staticwebassets\\files\\IMG_2406.JPG.part4"
-    },
-    {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\IMG_2406.JPG.part5",
-      "PackagePath": "staticwebassets\\files\\IMG_2406.JPG.part5"
-    },
-    {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\IMG_2406.JPG.part6",
-      "PackagePath": "staticwebassets\\files\\IMG_2406.JPG.part6"
-    },
-    {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\IMG_2406.JPG.part7",
-      "PackagePath": "staticwebassets\\files\\IMG_2406.JPG.part7"
-    },
-    {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\_DSC0096bw.jpg.part1",
-      "PackagePath": "staticwebassets\\files\\_DSC0096bw.jpg.part1"
-    },
-    {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\_DSC0096bw.jpg.part2",
-      "PackagePath": "staticwebassets\\files\\_DSC0096bw.jpg.part2"
-    },
-    {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\_DSC0096bw.jpg.part3",
-      "PackagePath": "staticwebassets\\files\\_DSC0096bw.jpg.part3"
-    },
-    {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\_DSC0096bw.jpg.part4",
-      "PackagePath": "staticwebassets\\files\\_DSC0096bw.jpg.part4"
-    },
-    {
-      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\files\\coverphoto.jpg.part1",
-      "PackagePath": "staticwebassets\\files\\coverphoto.jpg.part1"
-    },
-    {
       "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
@@ -315,6 +267,22 @@
     {
       "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\multifiles\\b8b7a1e1-eab8-49f6-8ff7-ddea1adb6587\\_DSC0096bw.jpg.part1",
+      "PackagePath": "staticwebassets\\multifiles\\b8b7a1e1-eab8-49f6-8ff7-ddea1adb6587\\_DSC0096bw.jpg.part1"
+    },
+    {
+      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\multifiles\\b8b7a1e1-eab8-49f6-8ff7-ddea1adb6587\\_DSC0096bw.jpg.part2",
+      "PackagePath": "staticwebassets\\multifiles\\b8b7a1e1-eab8-49f6-8ff7-ddea1adb6587\\_DSC0096bw.jpg.part2"
+    },
+    {
+      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\multifiles\\b8b7a1e1-eab8-49f6-8ff7-ddea1adb6587\\_DSC0096bw.jpg.part3",
+      "PackagePath": "staticwebassets\\multifiles\\b8b7a1e1-eab8-49f6-8ff7-ddea1adb6587\\_DSC0096bw.jpg.part3"
+    },
+    {
+      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\multifiles\\b8b7a1e1-eab8-49f6-8ff7-ddea1adb6587\\_DSC0096bw.jpg.part4",
+      "PackagePath": "staticwebassets\\multifiles\\b8b7a1e1-eab8-49f6-8ff7-ddea1adb6587\\_DSC0096bw.jpg.part4"
     },
     {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.KingUploader.Microsoft.AspNetCore.StaticWebAssets.props",

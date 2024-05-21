@@ -142,7 +142,7 @@ namespace KingUploader.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult UploadMultiFiles(string Filename, string Start, int FilePartCount)
+        public IActionResult UploadMultiFiles(string Filename, string Start, int FilePartCount,Guid SpecificFolderName)
         {
             IFormFile formFile = Request.Form.Files[0];
 
@@ -150,7 +150,7 @@ namespace KingUploader.Controllers
                 .Execute(new KingUploader.Core.Application.Services.MultiFiles.Commands.PostMultiFiles.RequestPostMultiFilesServiceDto
                 {
                     Filename = Filename,
-                    //FilePart = filepartcountfromdatabase,
+                    SpecificFolderName = SpecificFolderName,
                     Start = Start,
                     FilePartCount = FilePartCount,
                     File = formFile,
@@ -165,6 +165,67 @@ namespace KingUploader.Controllers
         public IActionResult DeleteMultiFiles()
         {
             return Json(_multifilesFacade.DeleteMultiFilesAndDatabaseRecordsService.Execute());
+        }
+        [HttpPost]
+        public async Task<bool> MergeEachFile(string filename, string specificfoldername)
+        {
+            string folder = $@"wwwroot\multifiles\" + specificfoldername + @"\";
+            var uploadRootFolder = Path.Combine(Environment.CurrentDirectory, folder);
+            bool Output = false;
+            try
+            {
+                string[] tmpfiles = Directory.GetFiles(uploadRootFolder, "*.part*");
+
+                var sortedTmpfiles = tmpfiles
+                    .Select(x =>
+                    new
+                    {
+                        key = int.Parse(x.Replace("part", "").Substring(x.Replace("part", "").LastIndexOf("."), x.Replace("part", "").Length - (x.Replace("part", "").LastIndexOf("."))).Replace(".", ""))
+                        ,
+                        value = x
+                    })
+                    .OrderBy(p => p.key)
+                    .ToList();
+
+                var files = Directory.EnumerateFiles(folder).OrderByDescending(filename => filename);
+
+
+                FileStream outPutFile = null;
+                string PrevFileName = "";
+                foreach (var tempFile in sortedTmpfiles)
+                {
+                    string fileName = Path.GetFileNameWithoutExtension(tempFile.value);
+                    string baseFileName = fileName.Substring(0, fileName.IndexOf(Convert.ToChar(".")));
+                    string extension = Path.GetExtension(filename);
+                    if (!PrevFileName.Equals(baseFileName))
+                    {
+                        if (outPutFile != null)
+                        {
+                            outPutFile.Flush();
+                            outPutFile.Close();
+                        }
+                        outPutFile = new FileStream(uploadRootFolder + "\\" + baseFileName + extension, FileMode.OpenOrCreate, FileAccess.Write);
+                    }
+                    int bytesRead = 0;
+                    byte[] buffer = new byte[1024];
+                    using (FileStream inputTempFile = new FileStream(tempFile.value, FileMode.OpenOrCreate, FileAccess.Read))
+                    {
+                        while ((bytesRead = await inputTempFile.ReadAsync(buffer, 0, 1024)) > 0)
+                        {
+                            await outPutFile.WriteAsync(buffer, 0, bytesRead);
+                        }
+                    }
+                    PrevFileName = baseFileName;
+                }
+                outPutFile.Flush();
+                outPutFile.Close();
+                Output = true;
+            }
+            catch
+            {
+                return false;
+            }
+            return Output;
         }
     }
 }
