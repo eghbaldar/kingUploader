@@ -11,5 +11,6 @@ namespace KingUploader.Core.Persistence
 
         }
         public DbSet<Files> Files { get; set; }
+        public DbSet<MultiFiles> MultiFiles { get; set; }
     }
 }

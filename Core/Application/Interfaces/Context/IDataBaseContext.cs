@@ -6,6 +6,7 @@ namespace KingUploader.Core.Application.Interfaces.Context
     public interface IDataBaseContext
     {
         DbSet<Files> Files { get; set; }
+        DbSet<MultiFiles> MultiFiles { get; set; }
 
         //SaveChanges
         int SaveChanges(bool acceptAllChangesOnSuccess);

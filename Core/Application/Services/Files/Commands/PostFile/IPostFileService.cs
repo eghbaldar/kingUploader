@@ -2,6 +2,6 @@
 {
     public interface IPostFileService
     {
-        public ResultPostFileServiceDto Execute(RequestPostFileServiceDto req);
+        public ResultPostFileServiceDto Execute(RequestPostMultiFilesServiceDto req);
     }
 }

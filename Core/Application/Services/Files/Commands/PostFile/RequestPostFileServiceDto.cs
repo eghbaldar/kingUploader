@@ -1,6 +1,6 @@
 ﻿namespace KingUploader.Core.Application.Services.Files.Commands.PostFile
 {
-    public class RequestPostFileServiceDto
+    public class RequestPostMultiFilesServiceDto
     {
         public IFormFile File { get; set; }
         public string Filename { get; set; }

@@ -13,10 +13,11 @@ namespace KingUploader.Controllers
     public class HomeController : Controller
     {
         private readonly IFilesFacade _filesFacade;
-
-        public HomeController(IFilesFacade filesFacade)
+        private readonly IMultiFilesFacade _multifilesFacade;
+        public HomeController(IFilesFacade filesFacade, IMultiFilesFacade multifilesFacade)
         {
             _filesFacade = filesFacade;
+            _multifilesFacade = multifilesFacade;
         }
 
         [HttpGet]
@@ -36,7 +37,7 @@ namespace KingUploader.Controllers
             IFormFile formFile = Request.Form.Files[0];
 
             var result = _filesFacade.PostFileService
-                .Execute(new Core.Application.Services.Files.Commands.PostFile.RequestPostFileServiceDto
+                .Execute(new Core.Application.Services.Files.Commands.PostFile.RequestPostMultiFilesServiceDto
                 {
                     Filename = Filename,
                     //FilePart = filepartcountfromdatabase,
@@ -139,6 +140,31 @@ namespace KingUploader.Controllers
         public IActionResult MultiSmallerModule()
         {
             return View();
+        }
+        [HttpPost]
+        public IActionResult UploadMultiFiles(string Filename, string Start, int FilePartCount)
+        {
+            IFormFile formFile = Request.Form.Files[0];
+
+            var result = _multifilesFacade.PostMultiFilesService
+                .Execute(new KingUploader.Core.Application.Services.MultiFiles.Commands.PostMultiFiles.RequestPostMultiFilesServiceDto
+                {
+                    Filename = Filename,
+                    //FilePart = filepartcountfromdatabase,
+                    Start = Start,
+                    FilePartCount = FilePartCount,
+                    File = formFile,
+                });
+            /////////////////////////////////////////
+            System.Threading.Thread.Sleep(2000);
+            ////////////////////////////////////////
+
+            return Json(result);
+        }
+        [HttpPost]
+        public IActionResult DeleteMultiFiles()
+        {
+            return Json(_multifilesFacade.DeleteMultiFilesAndDatabaseRecordsService.Execute());
         }
     }
 }

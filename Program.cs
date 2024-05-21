@@ -8,6 +8,7 @@ using KingUploader.Core.Persistence;
 using Microsoft.EntityFrameworkCore;
 using KingUploader.Core.Application.Interfaces.Facades;
 using KingUploader.Core.Application.Services.Files.FacadePattern;
+using KingUploader.Core.Application.Services.MultiFiles.FacadePattern;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IDataBaseContext, DataBaseContext>();
 builder.Services.AddScoped<IFilesFacade, FilesFacade>();
+builder.Services.AddScoped<IMultiFilesFacade, FacadeMultiFiles>();
 
 var ConnStr = builder.Configuration.GetConnectionString("ConnStr");
 builder.Services.AddEntityFrameworkSqlServer().AddDbContext<DataBaseContext>(x => x.UseSqlServer(ConnStr));

@@ -1,11 +1,10 @@
 ﻿//------------------------------------------------------------- variables Section
 const eachCHUNK_smallModule = 1000; // Based on KB // e.g. if you add 1000 in this variable, it is equalavent to (1000*1024)=>Byte // the volume of each chunk for uploading // NOTE: the last part may less than 100kb
-var start_smallModule = 0; // first Byte of your file // this varibale will be increase by [chunkSize_smallModule]
-var chunkSize_smallModule; // (BYTE) // keep the volume of each chunk in BYTE (eachCHUNK_smallModule * 1024)
-var file_smallModule; // Your file
-var increased_value_smallModule; // main Progress Global Variable
-var current_progress_smallModule = 0;// main Progress Global Variable
-var filePartCount_smallModule; // All parts of files after separating
+//var start = 0; // first Byte of your file // this varibale will be increase by [chunkSize_smallModule]
+//var chunkSize_smallModule; // (BYTE) // keep the volume of each chunk in BYTE (eachCHUNK_smallModule * 1024)
+//var increased_value_smallModule; // main Progress Global Variable
+//var current_progress_smallModule = 0;// main Progress Global Variable
+//var filePartCount_smallModule; // All parts of files after separating
 // progressbar section
 
 //////////////////////////////////////////////////////
@@ -45,30 +44,36 @@ function handleFileUpload_smallModule(fileInputId) {
         alert(checkSomeErrors);
         return;
     }
-    // end    
-    chunkSize_smallModule = 1024 * eachCHUNK_smallModule; // size of each chunk (1MB)
-    filePartCount_smallModule = Math.ceil(file.size / chunkSize_smallModule);
-    CalcIncreaseValue_smallModule(file.size); // [increased value] to progress of progressbar
+    // end
+
+    var chunkSize = 1024 * eachCHUNK_smallModule; // size of each chunk (1MB)
+    $("#" + fileInputId).data("chunkSize", 1024 * eachCHUNK_smallModule);   
+
+
+    var filePartCount = Math.ceil(file.size / chunkSize);
+    $("#" + fileInputId).data("filePartCount", filePartCount);   
+
+    CalcIncreaseValue_smallModule(file.size, fileInputId); // [increased value] to progress of progressbar
     actionProgressbar_smallModule(true, fileInputId); // the main Progressbar is started!
-    var chunk = file.slice(start_smallModule, start_smallModule + chunkSize_smallModule);    
-    uploadChunk_smallModule(chunk, chunkSize_smallModule, file.name, filePartCount_smallModule, fileInputId); // the main function is fired!
+    var chunk = file.slice(0, 0 + chunkSize);    
+    uploadChunk_smallModule(chunk, chunkSize, file.name, filePartCount, fileInputId); // the main function is fired!
 }
 
 //upload
-function uploadChunk_smallModule(chunk, chunkSize_smallModule, filename, filePartCount_smallModule, fileInputId) {
+function uploadChunk_smallModule(chunk, chunkSize, filename, filePartCount, fileInputId) {
     var postData = new FormData();
     postData.append("file", chunk);
-    postData.append("chunkSize", chunkSize_smallModule);
+    postData.append("chunkSize", chunkSize);
     postData.append("Filename", filename);
-    postData.append("start", start_smallModule);
-    postData.append("filePartCount", filePartCount_smallModule);
+    postData.append("start", $("#" + fileInputId).data("start"));
+    postData.append("filePartCount", filePartCount);
 
     $.ajax({
         contentType: false,
         processData: false,
         type: 'POST',
         data: postData,
-        url: '/Home/Upload',
+        url: '/Home/UploadMultiFiles',
         success: function (data) {
             if (data.result == 0) {
                 alert(data.message);
@@ -82,23 +87,27 @@ function uploadChunk_smallModule(chunk, chunkSize_smallModule, filename, filePar
             });
             var file = fileEntry.value; // Retrieve the file object from the file entry
             /////////////////////
-
+            
             if (data.result == 1) {
-                start_smallModule += chunkSize_smallModule; // chunkSize_smallModule is not an interval, but an index!
 
-                var chunk2 = file.slice(start_smallModule, start_smallModule + chunkSize_smallModule);
+                var chunkSize = $("#" + fileInputId).data("chunkSize");
+                var start = $("#" + fileInputId).data("start");
+                start += chunkSize;
+                $("#" + fileInputId).data("start", start);
 
-                if (chunk2.size >= chunkSize_smallModule) {
+                var chunk2 = file.slice(start, start + chunkSize);
+
+                if (chunk2.size >= chunkSize) {
                     actionProgressbar_smallModule(true, fileInputId);
                 }
                 else {
-                    chunkSize_smallModule = chunk2.size;
-                    chunk2 = file.slice(start_smallModule, start_smallModule + chunkSize_smallModule);
+                    chunkSize = chunk2.size;
+                    chunk2 = file.slice(start, start + chunkSize);
                     actionProgressbar_smallModule(false, fileInputId); // if the last part is less than [eachCHUNK_smallModule] KB
                 }
 
-                if (start_smallModule < file.size) {
-                    uploadChunk_smallModule(chunk2, chunkSize_smallModule, file.name, filePartCount_smallModule, fileInputId);
+                if (start < file.size) {
+                    uploadChunk_smallModule(chunk2, chunkSize, file.name, $("#" + fileInputId).data("filePartCount"), fileInputId);
                 }
             }
             if (data.result == 2) {
@@ -112,17 +121,20 @@ function uploadChunk_smallModule(chunk, chunkSize_smallModule, filename, filePar
 
 //Progressbar actio
 function actionProgressbar_smallModule(lastPartState, fileInputId) {
+
+    var progressNumber = $('.' + fileInputId).siblings('.progressNumber').attr('id');
+    var curprogress = $('.' + fileInputId).siblings('.curprogress').attr('id');
+
     if (lastPartState) {
+                
+        var total = parseInt($("#" + fileInputId).attr("data-currentProgress")) + parseInt($("#" + fileInputId).data("increasedValue"));
 
-        current_progress_smallModule = current_progress_smallModule + increased_value_smallModule;
-        var showedValue = parseFloat(current_progress_smallModule.toFixed(2));
+        $("#" + fileInputId).attr("data-currentProgress", total.toString());
+        var currentProgress = total;
 
-        
-        var progressNumber = $('.' + fileInputId).siblings('.progressNumber').attr('id');
-        var curprogress = $('.' + fileInputId).siblings('.curprogress').attr('id');
+        var showedValue = parseFloat(currentProgress.toFixed(2));               
 
-
-        $("#" + curprogress).css("width", `${current_progress_smallModule}%`);
+        $("#" + curprogress).css("width", `${currentProgress}%`);
         $("#" + progressNumber).text(`${showedValue}%`);
     }
     else {
@@ -160,20 +172,20 @@ function checkStandardVolumeExtentsion_smallModule(fileInput) {
 }
 
 // CalcIncreaseValue_smallModule
-function CalcIncreaseValue_smallModule(fileSize) {
+function CalcIncreaseValue_smallModule(fileSize, fileInputId) {
     var kb = fileSize / 1024; // convert to KB
     var eachKb = Math.ceil(kb / eachCHUNK_smallModule); // how many places does it have in 100% progressbar?
     var eachUnit = 100 / eachKb; // how much KB does include in each part (eachKb)?
-    increased_value_smallModule = eachUnit;
+    $("#" + fileInputId).data("increasedValue",eachUnit);
 }
 
 // delete database and files
-function DeleteDatabaseAndFiles_smallModule() {
+function DeleteDatabaseAndMultiFiles() {
     $.ajax({
         content: 'application/x-www-form-urlencoded',
         contentType: 'json',
         type: 'POST',
-        url: '/Home/Delete',
+        url: '/Home/DeleteMultiFiles',
         success: function (data) {
         },
         error: function (request, status, error) {
