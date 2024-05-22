@@ -135,7 +135,7 @@ namespace KingUploader.Controllers
         {
             return View();
         }
-        ///////////////////////////////////////////////////// Multi Small Uploader
+        ///////////////////////////////////////////////////// Multi Files Uploader
         [HttpGet]
         public IActionResult MultiSmallerModule()
         {

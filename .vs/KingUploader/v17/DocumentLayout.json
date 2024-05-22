@@ -3,20 +3,24 @@
   "WorkspaceRootPath": "D:\\_PROJECT_\\kingUploader\\kingUploader\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{14FDB5F7-3AA9-4CAA-83F4-A79AE9CD8984}|KingUploader.csproj|d:\\_project_\\kinguploader\\kinguploader\\wwwroot\\kingmaterials\\kinguploadermulti.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{14FDB5F7-3AA9-4CAA-83F4-A79AE9CD8984}|KingUploader.csproj|solutionrelative:wwwroot\\kingmaterials\\kinguploadermulti.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{14FDB5F7-3AA9-4CAA-83F4-A79AE9CD8984}|KingUploader.csproj|d:\\_project_\\kinguploader\\kinguploader\\core\\application\\services\\multifiles\\commands\\postmultifiles\\postmultifilesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{14FDB5F7-3AA9-4CAA-83F4-A79AE9CD8984}|KingUploader.csproj|solutionrelative:core\\application\\services\\multifiles\\commands\\postmultifiles\\postmultifilesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{14FDB5F7-3AA9-4CAA-83F4-A79AE9CD8984}|KingUploader.csproj|d:\\_project_\\kinguploader\\kinguploader\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{14FDB5F7-3AA9-4CAA-83F4-A79AE9CD8984}|KingUploader.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{14FDB5F7-3AA9-4CAA-83F4-A79AE9CD8984}|KingUploader.csproj|d:\\_project_\\kinguploader\\kinguploader\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{14FDB5F7-3AA9-4CAA-83F4-A79AE9CD8984}|KingUploader.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{14FDB5F7-3AA9-4CAA-83F4-A79AE9CD8984}|KingUploader.csproj|d:\\_project_\\kinguploader\\kinguploader\\views\\home\\multismallermodule.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{14FDB5F7-3AA9-4CAA-83F4-A79AE9CD8984}|KingUploader.csproj|solutionrelative:views\\home\\multismallermodule.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{14FDB5F7-3AA9-4CAA-83F4-A79AE9CD8984}|KingUploader.csproj|d:\\_project_\\kinguploader\\kinguploader\\wwwroot\\kingmaterials\\kinguploadermulti.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{14FDB5F7-3AA9-4CAA-83F4-A79AE9CD8984}|KingUploader.csproj|solutionrelative:wwwroot\\kingmaterials\\kinguploadermulti.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{14FDB5F7-3AA9-4CAA-83F4-A79AE9CD8984}|KingUploader.csproj|d:\\_project_\\kinguploader\\kinguploader\\core\\application\\services\\multifiles\\commands\\postmultifiles\\ipostmultifilesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{14FDB5F7-3AA9-4CAA-83F4-A79AE9CD8984}|KingUploader.csproj|solutionrelative:core\\application\\services\\multifiles\\commands\\postmultifiles\\ipostmultifilesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{14FDB5F7-3AA9-4CAA-83F4-A79AE9CD8984}|KingUploader.csproj|d:\\_project_\\kinguploader\\kinguploader\\views\\home\\multismallermodule.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{14FDB5F7-3AA9-4CAA-83F4-A79AE9CD8984}|KingUploader.csproj|solutionrelative:views\\home\\multismallermodule.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 170,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -38,46 +42,59 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "IPostMultiFilesService.cs",
-              "DocumentMoniker": "D:\\_PROJECT_\\kingUploader\\kingUploader\\Core\\Application\\Services\\MultiFiles\\Commands\\PostMultiFiles\\IPostMultiFilesService.cs",
-              "RelativeDocumentMoniker": "Core\\Application\\Services\\MultiFiles\\Commands\\PostMultiFiles\\IPostMultiFilesService.cs",
-              "ToolTip": "D:\\_PROJECT_\\kingUploader\\kingUploader\\Core\\Application\\Services\\MultiFiles\\Commands\\PostMultiFiles\\IPostMultiFilesService.cs",
-              "RelativeToolTip": "Core\\Application\\Services\\MultiFiles\\Commands\\PostMultiFiles\\IPostMultiFilesService.cs",
-              "ViewState": "AQIAABsAAAAAAAAAAAAAwDIAAABFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-21T12:32:40.632Z",
+              "DocumentIndex": 1,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\_PROJECT_\\kingUploader\\kingUploader\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
+              "ToolTip": "D:\\_PROJECT_\\kingUploader\\kingUploader\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Views\\Home\\Index.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAA6AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-05-22T08:09:20.181Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "PostMultiFilesService.cs",
+              "DocumentMoniker": "D:\\_PROJECT_\\kingUploader\\kingUploader\\Core\\Application\\Services\\MultiFiles\\Commands\\PostMultiFiles\\PostMultiFilesService.cs",
+              "RelativeDocumentMoniker": "Core\\Application\\Services\\MultiFiles\\Commands\\PostMultiFiles\\PostMultiFilesService.cs",
+              "ToolTip": "D:\\_PROJECT_\\kingUploader\\kingUploader\\Core\\Application\\Services\\MultiFiles\\Commands\\PostMultiFiles\\PostMultiFilesService.cs",
+              "RelativeToolTip": "Core\\Application\\Services\\MultiFiles\\Commands\\PostMultiFiles\\PostMultiFilesService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAJkAAAA8AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-22T07:58:25.87Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "HomeController.cs",
               "DocumentMoniker": "D:\\_PROJECT_\\kingUploader\\kingUploader\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
               "ToolTip": "D:\\_PROJECT_\\kingUploader\\kingUploader\\Controllers\\HomeController.cs",
               "RelativeToolTip": "Controllers\\HomeController.cs",
-              "ViewState": "AQIAAJ0AAAAAAAAAAAAkwKsAAABMAAAA",
+              "ViewState": "AQIAAIUAAAAAAAAAAAAzwJUAAAAYAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-21T11:28:07.431Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "KingUploaderMulti.js",
               "DocumentMoniker": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\KingMaterials\\KingUploaderMulti.js",
               "RelativeDocumentMoniker": "wwwroot\\KingMaterials\\KingUploaderMulti.js",
               "ToolTip": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\KingMaterials\\KingUploaderMulti.js",
               "RelativeToolTip": "wwwroot\\KingMaterials\\KingUploaderMulti.js",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABMAAAAyAAAA",
+              "ViewState": "AQIAACsAAAAAAAAAAAAQwJYAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-05-20T12:05:33.18Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "MultiSmallerModule.cshtml",
               "DocumentMoniker": "D:\\_PROJECT_\\kingUploader\\kingUploader\\Views\\Home\\MultiSmallerModule.cshtml",
               "RelativeDocumentMoniker": "Views\\Home\\MultiSmallerModule.cshtml",
@@ -85,8 +102,7 @@
               "RelativeToolTip": "Views\\Home\\MultiSmallerModule.cshtml",
               "ViewState": "AQIAABUAAAAAAAAAAAAAADkAAAASAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-05-21T12:43:00.117Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-21T12:43:00.117Z"
             }
           ]
         }
