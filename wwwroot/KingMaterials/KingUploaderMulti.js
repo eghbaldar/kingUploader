@@ -5,13 +5,19 @@ var fileStorage = []; // retrive from fileupload array
 $('.kingMultiUplaoder').each(function () {
     const fileInput = $(this).find('input[type="file"]');
     fileInput.on('change', function () {
+        // Clear the previous file entry from the fileStorage array
         var fileInputId = $(this).attr("id");
+        fileStorage = fileStorage.filter(function (entry) {
+            return entry.key !== fileInputId;
+        });
+
+        // Get the new file information and add it to the fileStorage array
         var file = $(this)[0].files[0];
         var fileEntry = {
             key: fileInputId,
             value: file
         };
-        fileStorage.push(fileEntry); // Store the file entry in the fileStorage array
+        fileStorage.push(fileEntry);
         handleFileUpload(fileInputId);
     });
 });
@@ -24,7 +30,7 @@ function handleFileUpload(fileInputId) {
     });
     var file = fileEntry.value; // Retrieve the file object from the file entry
     // check the file extension and size
-    var checkSomeErrors = checkStandardVolumeExtentsion(file);
+    var checkSomeErrors = checkStandardVolumeExtentsion(file, fileInputId);
     if (checkSomeErrors) {
         alert(checkSomeErrors);
         return;
@@ -126,27 +132,26 @@ function actionProgressbar(lastPartState, fileInputId) {
 }
 
 // check the file size and extension
-function checkStandardVolumeExtentsion(fileInput) {
+function checkStandardVolumeExtentsion(fileInput, fileInputId) {
 
-    var eVolume = "200000000";
-    var eExtension = "jpg";
-
-    var file_extension = /[^.]+$/.exec(fileInput.name); // get only the file extension
-
-    // check the file size at first
-    if (fileInput.size < eVolume) {
-        // check the file extension
-        if (eExtension.toLowerCase() == file_extension.toString().toLowerCase()) {
-            return null;// everything is Ok
-        }
-        else {
-            fileInput.value = null;
-            return "(client side) => Check your file extension!"; // error
-        }
+    // get attribute values from the controls
+    var maxVolumeAttribute = $("#" + fileInputId).attr("data-maxVolume");
+    var extensionAttribute = $("#" + fileInputId).data("extensions");
+    alert(maxVolumeAttribute);
+    alert(extensionAttribute);
+    var maxVolume = parseInt(maxVolumeAttribute);
+    var extensionArray = extensionAttribute.replace(/[{}]/g, '').split(',');
+    // check the file extension
+    if (extensionArray.includes($("#" + fileInputId)[0].files[0].name.split('.').pop().toLowerCase())) {
+        return null;
+    } else {
+        return `(client side) => Check your file extension! ${extensionAttribute} is allowed`; // Error
     }
-    else {
-        fileInput.value = null;
-        return "(client side) => Check your file size!"; // error
+    // check the file size
+    if (fileInput.size < maxVolume) {
+        return null; // Everything is OK
+    } else {
+        return `(client side) => Check your file size! ${maxVolumeAttribute} is allowed`; // Error
     }
 }
 
