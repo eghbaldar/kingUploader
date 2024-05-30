@@ -220,6 +220,20 @@ namespace KingUploader.Controllers
                 outPutFile.Flush();
                 outPutFile.Close();
                 Output = true;
+
+                // delete temp files
+                foreach (string tmpfile in tmpfiles)
+                {
+                    try
+                    {
+                        System.IO.File.Delete(tmpfile);
+                    }
+                    catch (IOException ex)
+                    {
+                        // Handle any exceptions that may occur during file deletion
+                        Console.WriteLine($"Error deleting file: {tmpfile}. Error message: {ex.Message}");
+                    }
+                }
             }
             catch
             {
