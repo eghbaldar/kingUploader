@@ -269,6 +269,14 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
+      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\multifiles\\3c10a07c-9830-f25e-bb3c-7a9c69038c1a\\_heavy1.jpg.part1",
+      "PackagePath": "staticwebassets\\multifiles\\3c10a07c-9830-f25e-bb3c-7a9c69038c1a\\_heavy1.jpg.part1"
+    },
+    {
+      "Id": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\multifiles\\b33ed7fe-9b24-5d24-aa42-451eacad3ddf\\_heavy1.jpg.part1",
+      "PackagePath": "staticwebassets\\multifiles\\b33ed7fe-9b24-5d24-aa42-451eacad3ddf\\_heavy1.jpg.part1"
+    },
+    {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.KingUploader.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

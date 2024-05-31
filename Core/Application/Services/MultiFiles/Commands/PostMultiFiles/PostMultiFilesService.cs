@@ -10,10 +10,10 @@ namespace KingUploader.Core.Application.Services.MultiFiles.Commands.PostMultiFi
         {
             _context = context;
         }
-        public ResultPostMultiFilesServiceDto Execute(RequestPostMultiFilesServiceDto req)
+        public async Task<ResultPostMultiFilesServiceDto> Execute(RequestPostMultiFilesServiceDto req)
         {
             // check size and extention
-            var resultCheckFileSizeExtension = CheckSizeExtension(req.FilePartCount, req.Filename);
+            var resultCheckFileSizeExtension = Validation(req.File, req.OriginalFileExtension, req.acceptableExensions, req.TotalFileSize, req.AcceptableFileSize);
             if (!resultCheckFileSizeExtension.Success) { return new ResultPostMultiFilesServiceDto { Message = resultCheckFileSizeExtension.Message, Result = 0 }; };
             // upload the file
             int filepartcountfromdatabase = Upload(req.File, req.Filename, req.SpecificFolderName);
@@ -116,7 +116,7 @@ namespace KingUploader.Core.Application.Services.MultiFiles.Commands.PostMultiFi
             try
             {
                 // create folder
-                string folder = $@"wwwroot\multifiles\"+ specificfoldername.ToString();
+                string folder = $@"wwwroot\multifiles\" + specificfoldername.ToString();
                 var uploadRootFolder = Path.Combine(Environment.CurrentDirectory, folder);
                 if (!Directory.Exists(uploadRootFolder)) Directory.CreateDirectory(uploadRootFolder);
                 // end
@@ -166,33 +166,40 @@ namespace KingUploader.Core.Application.Services.MultiFiles.Commands.PostMultiFi
             else
                 return 1; // FilePart:0 => first record
         }
-        private ResultDto CheckSizeExtension(int FilePartCount, string filename)
+        private ResultDto Validation(IFormFile file, string originalExtension, string[] acceptableExensions, string totalSize, string acceptableSize)
         {
-            // check file size & extension
-            if ((FilePartCount * Constants.Chunck * 1024) > 5000000000)
-            // why 100? because based on our principle, we are going to separate each chunk to 100 kb
-            // why 1024? becaue we need the byte unit to compare the two values
+            // check file
+            if (file == null || file.Length == 0)
             {
                 return new ResultDto
                 {
                     Success = false,
-                    Message = "(server side) => Check your file size! (must less than 50-MB)",
+                    Message = "There is no file provided.",
                 };
             }
-            else
+            // check extension
+            if (Array.IndexOf(acceptableExensions, originalExtension.ToLower()) < 0)
             {
-                if (Path.GetExtension(filename).Replace(".", "").ToLower() != "jpg".ToLower())
+                return new ResultDto
                 {
-                    return new ResultDto
-                    {
-                        Success = false,
-                        Message = "(server side) => Check your file extension!",
-                    };
-                }
+                    Success = false,
+                    Message = $"File extension (${originalExtension}) is unacceptable",
+                };
             }
+            // check size
+            if (Convert.ToInt64(totalSize) > Convert.ToInt64(acceptableSize))
+            {
+                return new ResultDto
+                {
+                    Success = false,
+                    Message = $"File must be less than {int.Parse(acceptableSize) / 1048576} Mb", // 1024*1024=1048576
+                };
+            }
+            // If all validations pass, return a successful result
             return new ResultDto
             {
                 Success = true,
+                Message = "File validation successful.",
             };
         }
     }

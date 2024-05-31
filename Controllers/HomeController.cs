@@ -142,7 +142,7 @@ namespace KingUploader.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult UploadMultiFiles(string Filename, string Start, int FilePartCount,Guid SpecificFolderName)
+        public IActionResult UploadMultiFiles(string Filename, string Start, int FilePartCount, Guid SpecificFolderName, string TotalFileSize, string OriginalFileExtension)
         {
             IFormFile formFile = Request.Form.Files[0];
 
@@ -154,12 +154,16 @@ namespace KingUploader.Controllers
                     Start = Start,
                     FilePartCount = FilePartCount,
                     File = formFile,
+                    OriginalFileExtension = OriginalFileExtension,
+                    TotalFileSize = TotalFileSize,
+                    acceptableExensions = new string[] { "jpg", "png" },
+                    AcceptableFileSize = "20097152", // => 2 Mb
                 });
             /////////////////////////////////////////
             System.Threading.Thread.Sleep(2000);
             ////////////////////////////////////////
 
-            return Json(result);
+            return Json(result.Result);
         }
         [HttpPost]
         public IActionResult DeleteMultiFiles()

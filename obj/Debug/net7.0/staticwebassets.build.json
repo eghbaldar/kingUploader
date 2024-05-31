@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "k52PHZ+YjiMlIC8liZzanS748YI3asTX/6iI9M3o5bc=",
+  "Hash": "dpNBbLlhRdVYwFMYCogp7kGwLMJPjzLBkle9foY5pag=",
   "Source": "KingUploader",
   "BasePath": "_content/KingUploader",
   "Mode": "Default",
@@ -1307,6 +1307,44 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Identity": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\multifiles\\3c10a07c-9830-f25e-bb3c-7a9c69038c1a\\_heavy1.jpg.part1",
+      "SourceId": "KingUploader",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\",
+      "BasePath": "_content/KingUploader",
+      "RelativePath": "multifiles/3c10a07c-9830-f25e-bb3c-7a9c69038c1a/_heavy1.jpg.part1",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\multifiles\\3c10a07c-9830-f25e-bb3c-7a9c69038c1a\\_heavy1.jpg.part1"
+    },
+    {
+      "Identity": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\multifiles\\b33ed7fe-9b24-5d24-aa42-451eacad3ddf\\_heavy1.jpg.part1",
+      "SourceId": "KingUploader",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\_PROJECT_\\kingUploader\\kingUploader\\wwwroot\\",
+      "BasePath": "_content/KingUploader",
+      "RelativePath": "multifiles/b33ed7fe-9b24-5d24-aa42-451eacad3ddf/_heavy1.jpg.part1",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\multifiles\\b33ed7fe-9b24-5d24-aa42-451eacad3ddf\\_heavy1.jpg.part1"
     }
   ]
 }

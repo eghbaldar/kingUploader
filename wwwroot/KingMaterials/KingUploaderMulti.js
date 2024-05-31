@@ -30,7 +30,7 @@ function handleFileUpload(fileInputId) {
     });
     var file = fileEntry.value; // Retrieve the file object from the file entry
     // check the file extension and size
-    var checkSomeErrors = checkStandardVolumeExtentsion(file, fileInputId);
+    var checkSomeErrors = checkStandardVolumeExtentsion(fileInputId);
     if (checkSomeErrors) {
         alert(checkSomeErrors);
         return;
@@ -52,6 +52,8 @@ function handleFileUpload(fileInputId) {
 function uploadChunk(chunk, chunkSize, filename, filePartCount, fileInputId, specificfoldername) {
     var postData = new FormData();
     postData.append("file", chunk);
+    postData.append("TotalFileSize", $("#" + fileInputId).prop('files')[0].size); // total volume of the file
+    postData.append("OriginalFileExtension", $("#" + fileInputId).prop('files')[0].name.split('.').pop().toLowerCase()); // original extension
     postData.append("chunkSize", chunkSize);
     postData.append("Filename", filename);
     postData.append("start", $("#" + fileInputId).data("start"));
@@ -76,7 +78,7 @@ function uploadChunk(chunk, chunkSize, filename, filePartCount, fileInputId, spe
             var file = fileEntry.value; // Retrieve the file object from the file entry
             /////////////////////
             if (data.result == 1) {
-
+                alert('test');
                 var chunkSize = $("#" + fileInputId).data("chunkSize");
                 var start = $("#" + fileInputId).data("start");
                 start += chunkSize;
@@ -132,27 +134,21 @@ function actionProgressbar(lastPartState, fileInputId) {
 }
 
 // check the file size and extension
-function checkStandardVolumeExtentsion(fileInput, fileInputId) {
-
+function checkStandardVolumeExtentsion(fileInputId) {
+    // if you want to check your on-server-validations, just use "return null;" and simply comment the follwing block!
     // get attribute values from the controls
     var maxVolumeAttribute = $("#" + fileInputId).attr("data-maxVolume");
     var extensionAttribute = $("#" + fileInputId).data("extensions");
-    alert(maxVolumeAttribute);
-    alert(extensionAttribute);
-    var maxVolume = parseInt(maxVolumeAttribute);
     var extensionArray = extensionAttribute.replace(/[{}]/g, '').split(',');
+
+    var checkSize = parseInt($("#" + fileInputId).prop('files')[0].size) < parseInt(maxVolumeAttribute);
+    var checkExtension = extensionArray.includes($("#" + fileInputId)[0].files[0].name.split('.').pop().toLowerCase());
+
     // check the file extension
-    if (extensionArray.includes($("#" + fileInputId)[0].files[0].name.split('.').pop().toLowerCase())) {
-        return null;
-    } else {
-        return `(client side) => Check your file extension! ${extensionAttribute} is allowed`; // Error
-    }
-    // check the file size
-    if (fileInput.size < maxVolume) {
-        return null; // Everything is OK
-    } else {
-        return `(client side) => Check your file size! ${maxVolumeAttribute} is allowed`; // Error
-    }
+    if (checkExtension) {
+        if (checkSize) return null; // Everything is OK
+        else return "(client side) => Check your file size!"; // Error
+    } else return "(client side) => Check your file extension!"; // Error
 }
 
 // CalcIncreaseValue_smallModule
@@ -161,21 +157,6 @@ function CalcIncreaseValue(fileSize, fileInputId) {
     var eachKb = Math.ceil(kb / eachCHUNK_smallModule); // how many places does it have in 100% progressbar?
     var eachUnit = 100 / eachKb; // how much KB does include in each part (eachKb)?
     $("#" + fileInputId).data("increasedValue", eachUnit);
-}
-
-// delete database and files
-function DeleteDatabaseAndMultiFiles() {
-    $.ajax({
-        content: 'application/x-www-form-urlencoded',
-        contentType: 'json',
-        type: 'POST',
-        url: '/Home/DeleteMultiFiles',
-        success: function (data) {
-        },
-        error: function (request, status, error) {
-            //alert('request:' + request.responseText + ';err:' + error);
-        }
-    });
 }
 
 // merging_smallModule
@@ -203,4 +184,20 @@ function uuidv4() {
                 v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         });
+}
+
+
+// delete database and files
+function DeleteDatabaseAndMultiFiles() {
+    $.ajax({
+        content: 'application/x-www-form-urlencoded',
+        contentType: 'json',
+        type: 'POST',
+        url: '/Home/DeleteMultiFiles',
+        success: function (data) {
+        },
+        error: function (request, status, error) {
+            //alert('request:' + request.responseText + ';err:' + error);
+        }
+    });
 }

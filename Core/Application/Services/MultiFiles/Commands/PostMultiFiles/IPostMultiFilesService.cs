@@ -6,7 +6,7 @@ namespace KingUploader.Core.Application.Services.MultiFiles.Commands.PostMultiFi
 {
     public interface IPostMultiFilesService
     {
-        ResultPostMultiFilesServiceDto Execute(RequestPostMultiFilesServiceDto req);
+        Task<ResultPostMultiFilesServiceDto> Execute(RequestPostMultiFilesServiceDto req);
     }
 
 }
